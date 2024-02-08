@@ -1,0 +1,15 @@
+{
+    "manifest_version": 2,
+    "name": "CG",
+    "version": "3.0",
+    "description": "Eklenti dizinindeki X.html dosyasını açar.",
+    "permissions": ["tabs"],
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": "icon.png"
+    },
+    "icons": {
+      "48": "icon.png"
+    }
+  }
+  
