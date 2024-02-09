@@ -31,42 +31,19 @@ document.body.append(HOLDER);
 HOLDER.appendChild(container);
 
 function getrndmcdla() {
-  const randomNumber = Math.floor(Math.random() * 115) + 1;
-  const url = chrome.runtime.getURL("./cdla/noti/" + randomNumber + ".txt");
-
-  return fetch(url)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.text();
-    })
-    .then(function (data) {
-      return data;
-    });
+  const randomNumber = Math.floor(Math.random() * 111) + 1;
+return "./assets/cdla/normal/noti/" + randomNumber + ".jpg"
 }
 function getmedia(konm) {
-  console.log(konm);
-  const url = chrome.runtime.getURL(konm);
-
-  return fetch(url)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.text();
-    })
-    .then(function (data) {
-      return data;
-    });
-}
+return konm
+}1
 startGame();
 
 const shoplist = [
   {
     name: "Dildo",
     price: 15000,
-    img: "./rolette/assets/cdla/shop/dildo.txt",
+    img: "./assets/cdla/normal/shop/dildo.jpg",
     desc: "Ruleti dildo ile çevirerek, Ekstradan +20 şans puanı elde et!",
     expiry: 1,
     use: function () {
@@ -79,7 +56,7 @@ const shoplist = [
   {
     name: "Uçan otomatik kavramalı dildo",
     price: 30000,
-    img: "./rolette/assets/cdla/shop/ucandildo.txt",
+    img: "./assets/cdla/normal/shop/ucandildo.jpg",
     desc: "Ruleti Uçan dildo ile çevirerek, Ekstradan +69 şans puanı elde et!",
     expiry: 1,
     use: function () {
@@ -92,7 +69,7 @@ const shoplist = [
   {
     name: "İtalyanın gemlik şehrinden çıkan yerli ve milli togg Otomobilimiz",
     price: 200000,
-    img: "./rolette/assets/cdla/shop/togg.txt",
+    img: "./assets/cdla/normal/shop/togg.jpg",
     desc: "Rulete togg otomobilin ile giderek, Paranı 2'ye katla!",
     expiry: 1,
     use: function () {
@@ -102,7 +79,7 @@ const shoplist = [
   {
     name: "117 yıldır yanan am",
     price: 2000,
-    img: "./rolette/assets/cdla/shop/117yil.txt",
+    img: "./assets/cdla/normal/shop/117yil.jpg",
     desc: "Casinonun ışığını 117 yıldır yanan am ile değiştirerek, Rastgele olayların gelme olasılığını arttır.",
     expiry: 10,
     use: function () {
@@ -115,7 +92,7 @@ const shoplist = [
   {
     name: "Gemicik",
     price: 2000,
-    img: "./rolette/assets/cdla/shop/gemicik.txt",
+    img: "./assets/cdla/normal/shop/gemicik.jpg",
     desc: "Casinoyu gemiciğe taşı ve, casionun temasını değiştir!",
     expiry: 0,
     use: function () {
@@ -130,7 +107,7 @@ const shoplist = [
   {
     name: "Teyyip (para çalabiliyor)",
     price: 27929,
-    img: "./rolette/assets/cdla/shop/teyyip.txt",
+    img: "./assets/cdla/normal/shop/teyyip.jpg",
     desc: "Casinoya teyyip koy ve teyyip ile ilahi dinle! (Dikkat teyyip para çalabilir!)",
     expiry: 0,
     use: function () {
@@ -143,7 +120,7 @@ const shoplist = [
   {
     name: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi",
     price: 31690,
-    img: "./rolette/assets/cdla/shop/yakisikli.txt",
+    img: "./assets/cdla/normal/shop/yakisikli.jpg",
     desc: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi ile rastgele olaylarda asla ölme!",
     expiry: 10,
     use: function () {
@@ -156,7 +133,7 @@ const shoplist = [
   {
     name: "kürtaj olmuş bodrumlu kurpiyer",
     price: 398889,
-    img: "./rolette/assets/cdla/shop/kurpiyer.txt",
+    img: "./assets/cdla/normal/shop/kurpiyer.jpg",
     desc: "kürtaj olmuş bodrumlu kurpiyer ile ekstra can al!",
     expiry: 1,
     use: function () {
@@ -199,9 +176,7 @@ function OpenShop() {
     let imgdimg = document.createElement("img");
 
     imgdimg.className = " object-fill h-screen w-screen ";
-    getmedia(ce["img"]).then((x) => {
-      imgdimg.src = x;
-    });
+    imgdimg.src = getmedia(ce["img"])
     imgdimg.style.borderRadius = "6px";
     imgdimg.style.height = "120px";
     imgdimg.style.width = "100%";
@@ -239,9 +214,7 @@ function OpenShop() {
 
       let nimage = document.createElement("img");
 
-      getmedia(ce["img"]).then((x) => {
-        nimage.src = x;
-      });
+      nimage.src = getmedia(ce["img"])
       nimage.style.objectFit = "fill";
       nimage.style.display = "flex";
       nimage.style.position = "absolute";
@@ -373,9 +346,7 @@ function gameOver() {
   sansdegisikligi = 0;
   let nimage = document.createElement("img");
 
-  getrndmcdla().then((x) => {
-    nimage.src = x;
-  });
+  nimage.src = getrndmcdla();
   nimage.style.objectFit = "fill";
   nimage.style.display = "flex";
   nimage.style.position = "absolute";
@@ -1230,9 +1201,8 @@ function revent() {
   );
   let nimage = document.createElement("img");
 
-  getrndmcdla().then((x) => {
-    nimage.src = x;
-  });
+  nimage.src = getrndmcdla();
+
   nimage.style.objectFit = "fill";
   nimage.style.display = "flex";
   nimage.style.position = "absolute";
@@ -1316,9 +1286,8 @@ function win(winningSpin, winValue, betTotal) {
     let nimage = document.createElement("img");
     const rndimg = Math.floor(Math.random() * 111) + 1;
 
-    getrndmcdla().then((x) => {
-      nimage.src = x;
-    });
+    nimage.src = getrndmcdla();
+
     nimage.style.objectFit = "fill";
     nimage.style.display = "flex";
     nimage.style.position = "absolute";
