@@ -278,10 +278,10 @@ const shoplist = [
   },
   {
     id: 5,
-    name: "Teyyip (para çalabiliyor)",
-    price: 2310,
+    name: "Teyyip",
+    price: 1310,
     img: "./rolette/assets/cdla/shop/teyyip.txt",
-    desc: "Casinoya teyyip koy ve teyyip ile ilahi dinle! (Dikkat teyyip para çalabilir!)",
+    desc: "Casinoya teyyip koy ve teyyip ile ilahi dinle! Dikkat teyyip ana avrat düz girebilir, ilahi çalabilir, senle taşşak geçebilir,Sesli bir şekilde ahlayabilir ve olan olayları okuyabilir! Bu nedenle teyyip +18 bir üründür ve alırken +18 sesler çıkartacağını bilerek almanızı öneririz.",
     expiry: 0,
     use: function () {
       teyyip = true;
@@ -296,7 +296,7 @@ const shoplist = [
   {
     id: 6,
     name: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi",
-    price: 3169,
+    price: 1000,
     img: "./rolette/assets/cdla/shop/yakisikli.txt",
     desc: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi ile rastgele olaylarda asla ölme!",
     expiry: 10,
@@ -313,7 +313,7 @@ const shoplist = [
   {
     id: 7,
     name: "kürtaj olmuş bodrumlu kurpiyer",
-    price: 20000,
+    price: 2500,
     img: "./rolette/assets/cdla/shop/kurpiyer.txt",
     desc: "kürtaj olmuş bodrumlu kurpiyer ile ekstra can al!",
     expiry: 1,
@@ -347,6 +347,7 @@ const shoplist = [
     type: "theme",
   },
 ];
+var teyyipsesi = 0.3;
 const themes = {
   classic: "background-color: #016D29;color: #fff;",
   gemicik: "color: #fff;background-image:url('gemicik');",
@@ -374,7 +375,8 @@ let song_DURS = {
       {
         md: "mutlu",
         sb: "kazanma",
-      },      {
+      },
+      {
         md: "mutlu",
         sb: "pozitif",
       },
@@ -451,7 +453,8 @@ let song_DURS = {
       {
         md: "normal",
         sb: "saçma",
-      },      {
+      },
+      {
         md: "üzgün",
         sb: "dalga",
       },
@@ -489,26 +492,61 @@ let song_DURS = {
       },
     ],
   },
-};//random,paraart,paraaz,die,lose,win
-loadSongs()
-function playTeyyip(durum){
-  let rndm = Math.random()
-  let sec = ""
-  if(rndm > 0.7){
-    sec = "az"
-  }else{
-    sec = "cok"
+}; //random,paraart,paraaz,die,lose,win
+loadSongs();
+let teyporan = 3
+function playTeyyip(durum) {
+  if (!teyyip) {
+    return;
   }
-  if(song_DURS[durum] != null){
-    let itm = song_DURS[durum][sec]
-    let rndmd = Math.floor(Math.random()*itm.length);
-    let sel = itm[rndmd]
-    console.log(itm,rndmd)
-    let sngs = songs[sel["md"]][sel["sb"]]["_files"]
-    let sngsrndm = Math.floor(Math.random()*sngs.length);
+  let rndm = Math.random();
+  let sec = "";
+  if (rndm > 0.7) {
+    sec = "az";
+  } else {
+    sec = "cok";
+  }
+  if (song_DURS[durum] != null) {
+    let itm = song_DURS[durum][sec];
+    let rndmd = Math.floor(Math.random() * itm.length);
+    let sel = itm[rndmd];
+    console.log(itm, rndmd);
+    let sngs = songs[sel["md"]][sel["sb"]]["_files"];
+    let sngsrndm = Math.floor(Math.random() * sngs.length);
     let selsong = sngs[sngsrndm];
-    console.log(sel["md"])
-    PlayAudio("https://raw.githubusercontent.com/srpgck/CG/main/CDN/SFX/"+sel["md"]+"/"+sel["sb"]+"/"+selsong,(Math.floor(Math.random()*60)+1))
+    console.log(sel["md"]);
+    let aud = new Audio();
+    aud.src =
+      "https://raw.githubusercontent.com/srpgck/CG/main/CDN/SFX/" +
+      sel["md"] +
+      "/" +
+      sel["sb"] +
+      "/" +
+      selsong;
+
+    aud.addEventListener(
+      "loadedmetadata",
+      function () {
+        // Obtain the duration in seconds of the audio file (with milliseconds as well, a float value)
+        var duration = audio.duration;
+        let drt = Math.floor(Math.random() * duration) + 1;
+        if (Math.floor(duration / teyporan) > drt) {
+          drt = Math.floor(duration / teyporan);
+        }
+        console.log("DRT",drt)
+        PlayAudio(
+          "https://raw.githubusercontent.com/srpgck/CG/main/CDN/SFX/" +
+            sel["md"] +
+            "/" +
+            sel["sb"] +
+            "/" +
+            selsong,
+          drt
+        );
+      },
+      false
+    );
+    delete aud;
   }
 }
 function loadSongs() {
@@ -519,23 +557,49 @@ function loadSongs() {
     });
 }
 const audio = new Audio();
-var tbp = [];
-var cp = {};
+
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  if (tab.url.startsWith("chrome-extension://")) {
+    if (changeInfo.mutedInfo && changeInfo.mutedInfo.muted) {
+      console.log("Tab muted:", tabId);
+      // Burada tab susturulduğunda yapılacak işlemleri gerçekleştirebilirsiniz.
+    } else {
+      console.log("Tab unmuted:", tabId);
+      // Burada tabın sesinin açıldığında yapılacak işlemleri gerçekleştirebilirsiniz.
+    }
+  }
+});
+
+let paus = false;
+
 function PlayAudio(konm, dur) {
   audio.src = konm;
+  audio.volume = teyyipsesi;
   audio.play();
   cp = { konm: konm, dur: dur };
-  setTimeout(()=>{
-    if(cp["konm"] == konm){
-      audio.pause()
+  setTimeout(() => {
+    if (cp["konm"] == konm) {
+      audio.pause();
     }
-  },(dur*1000))
+  }, dur * 1000);
 }
-/*setInterval(() => {
-  if (audio.duration == cp["dur"]["end"]) {
-    audio.pause();
+let randteyip = 0.8;
+setInterval(() => {
+  if (audio.paused) {
+    if (Math.random() > randteyip) {
+      playTeyyip("random");
+    }
   }
-}, 100);*/
+}, 3000);
+setInterval(() => {
+  if (document.hidden) {
+    paus = true;
+    audio.pause();
+  } else if (!document.hidden && paus) {
+    paus = false;
+    audio.play();
+  }
+}, 100);
 let currentBet = 0;
 let wager = 5;
 let lastWager = 0;
@@ -576,6 +640,10 @@ function saveGame() {
     revs: revs,
     can: can,
     olumsuz: olumsuz,
+    randteyip: randteyip,
+    teyyip: teyyip,
+    teyyipsesi: teyyipsesi,
+    teyporan:teyporan,
   };
   database.set("gamesave", x);
 }
@@ -615,7 +683,7 @@ setInterval(function () {
 
 function loadSave() {
   let x = {
-    bankValue: bankValue,
+    bankValue: bankValue + currentBet,
     items: items,
     theme: theme,
     aranma: aranma,
@@ -623,6 +691,10 @@ function loadSave() {
     revs: revs,
     can: can,
     olumsuz: olumsuz,
+    randteyip: randteyip,
+    teyyip: teyyip,
+    teyyipsesi: teyyipsesi,
+    teyporan:teyporan,
   };
   let xy = database.get("gamesave");
   if (typeof xy == "object" && xy != null) {
@@ -637,6 +709,10 @@ function loadSave() {
   revs = x["revs"];
   can = x["can"];
   olumsuz = x["olumsuz"];
+  randteyip = x["randteyip"];
+  teyyip = x["teyyip"];
+  teyyipsesi = x["teyyipsesi"];
+  teyporan = x["teyporan"]
   reloadBankValue();
   reloadItems();
   if (bankValue <= 0) {
@@ -864,9 +940,11 @@ function useItem(itm, cf, when) {
 function reloadItems() {
   let oit = items;
   items = [];
-  document.getElementById("itemholder").childNodes.forEach((x) => {
-    x.remove();
-  });
+  for (i = 0; i < 100; i++) {
+    document.getElementById("itemholder").childNodes.forEach((x) => {
+      x.remove();
+    });
+  }
   oit.forEach((x) => {
     if (x["executed"]) {
       BuyItem(shoplist[x["id"]], true);
@@ -877,6 +955,13 @@ function reloadItems() {
     } else {
       console.log(x);
     }
+  });
+  items.forEach((x) => {
+    oit.forEach((x2)=>{
+      if(x.id == x2.id){
+        x.expsay = x2.expsay
+      }
+    })
   });
 }
 
@@ -940,14 +1025,14 @@ function BuyItem(itemce, rld) {
   let itm_d = document.createElement("div");
   itm_d.className = "overlay";
   itm_d.style.cursor = "pointer";
-  itm_d.innerText = "Can: " + (itm["expiry"] == 0 ? "Sonsuz" : itm["expiry"]);
+  itm_d.innerText = "Tıkla";
   itm_d.onclick = () => {
     if (itemce["type"] == "theme") {
       notify(
         itemce["name"],
         itemce["desc"] +
           "\nCanı : " +
-          (itemce["expiry"] == 0 ? "Sonsuz" : itemce["expiry"]),
+          (itemce["expiry"] == 0 ? "Sonsuz" : (itemce["expiry"]-itemce["expsay"])),
         "Bu temayı Kullan",
         () => {
           useItem(itm, 3, false);
@@ -957,12 +1042,38 @@ function BuyItem(itemce, rld) {
           useItem(itm, 3, true);
         }
       );
-    } else {
+    } else if (itemce["id"] == 5) {
       notify(
         itemce["name"],
         itemce["desc"] +
           "\nCanı : " +
-          (itemce["expiry"] == 0 ? "Sonsuz" : itemce["expiry"]),
+          (itemce["expiry"] == 0 ? "Sonsuz" :(itemce["expiry"]-itemce["expsay"])) +
+          "\n\nTeyyipin çenesinin yayını ve konuşma sitilini ayarla",
+        "Orospu çocuğunun çenesinin yayını sikeyim az susun (daha az ve sessiz çalar)",
+        () => {
+          randteyip = 0.8;
+          teyyipsesi = 0.5;
+          teyporan = 3;
+        },
+        "bu çalmıyo amk daha çok çalsın (sikim sonik şekilde çalar ve sesi artar)",
+        () => {
+          randteyip = 0.5;
+          teyyipsesi = 0.8;
+          teyporan = 2;
+        }
+      );
+    } else {
+      let itm = itemce
+      items.forEach((x)=>{
+        if(x.id == itemce.id){
+          itm = x
+        }
+      })
+      notify(
+        itemce["name"],
+        itemce["desc"] +
+          "\nCanı : " +
+          (itemce["expiry"] == 0 ? "Sonsuz" : (itm["expiry"]-itm["expsay"])),
         "bu bilgileri götüme sokacağım teşekürler",
         null,
         "napim"
@@ -986,9 +1097,10 @@ function BuyItem(itemce, rld) {
   useItem(itm, 3);
   items.push(itm);
   checkFinish(itm, 3);
-  notify(itemce["name"] + " Envanterine Eklendi", null, "tamam(tr)");
+  if (!rld) {
+    notify(itemce["name"] + " Envanterine Eklendi", null, "tamam(tr)");
+  }
 }
-
 function OpenShop() {
   let ms = document.getElementById("shopms");
   ms.style.visibility = "visible";
@@ -1314,6 +1426,7 @@ function startGame() {
 }
 function gameOver() {
   gameoverd = true;
+  playTeyyip("lose");
   if (can > 0) {
     items.forEach((x) => {
       useItem(x, 6);
@@ -1321,15 +1434,17 @@ function gameOver() {
     items.forEach((x) => {
       checkFinish(x, 6);
     });
+    playTeyyip("win");
     Speak("Kürtaj olmuş bodrumlu kurpiyer tarafından kuratrıldın!");
     Speak(
-      "bodrumlu kurpiyer 'Senin kumarın burda bitmez' dedi ve sana göt cebinden 100.000 TL uzattı."
+      "bodrumlu kurpiyer 'Senin kumarın burda bitmez' dedi ve sana göt cebinden 1.500 TL uzattı."
     );
     notify(
       "Kürtaj olmuş bodrumlu kurpiyer tarafından kuratrıldın!",
-      "bodrumlu kurpiyer 'Senin kumarın burda bitmez' dedi ve sana göt cebinden 100.000 TL uzattı.",
+      "bodrumlu kurpiyer 'Senin kumarın burda bitmez' dedi ve sana göt cebinden 1.500 TL uzattı.",
       "sikisekmi",
       () => {
+        playTeyyip("die");
         Speak("Öldün");
         Speak(
           "Kürtaj olmuş bodrumlu kurpiyer birdaha kürtaj olmak istemediğiden seni öldürdü"
@@ -1343,7 +1458,7 @@ function gameOver() {
       },
       "eyvallah bacım",
       () => {
-        bankValue = 100000;
+        bankValue = 1500;
       }
     );
     return;
@@ -2035,6 +2150,9 @@ function spin() {
     checkFinish(x, 0);
     checkFinish(x, 1);
   });
+  if (Math.random() > randteyip) {
+    playTeyyip("random");
+  }
   var winningSpin = Math.floor(Math.random() * 37);
   if (sansdegisikligi == 0) {
   } else if (Math.floor(Math.random() * 100) + 1 <= sansdegisikligi) {
@@ -2053,6 +2171,9 @@ function spin() {
       }
     } while (0);
     sansdegisikligi = 0;
+  }
+  if (Math.random() > randteyip) {
+    playTeyyip("random");
   }
   spinWheel(winningSpin);
   setTimeout(function () {
@@ -2159,6 +2280,7 @@ function revent() {
   let nbnvl = 0;
   let nSpan = document.createElement("span");
   nSpan.setAttribute("class", "nSpan");
+  let pm = "";
   let durum = "ERR " + evnt.substring(0, evnt.length - 1);
   if (evnt.substring(evnt.length - 1, evnt.length) == "0") {
     if (olumsuz) {
@@ -2171,13 +2293,16 @@ function revent() {
       durum = "Öldün";
       bankValue = 0;
       saveGame();
+      pm = "die";
     }
   } else if (evnt.substring(evnt.length - 1, evnt.length) == "-") {
     durum = "Paran azaldı";
     bankValue = bankValue - ram;
+    pm = "paraaz";
   } else if (evnt.substring(evnt.length - 1, evnt.length) == "+") {
     durum = "Paran arttı";
     bankValue = bankValue + ram;
+    pm = "paraart";
   } else if (evnt.substring(evnt.length - 1, evnt.length) == "1") {
     durum =
       "Aranıyorsun (Şans değişkenliğini rastgele bir yönde 1 puan arttırır)";
@@ -2186,6 +2311,7 @@ function revent() {
     } else {
       sansdegisikligi--;
     }
+    pm = "random";
   } else if (evnt.substring(evnt.length - 1, evnt.length) == "*") {
     durum =
       "Şans değişikliği (Şans değişkenliğini rastgele bir şekilde belirler)";
@@ -2194,6 +2320,7 @@ function revent() {
     } else {
       sansdegisikligi = (Math.floor(Math.random() * 100) + 1) * -1;
     }
+    pm = "random";
   }
   if (olumsuz) {
     if (bankValue <= 0) {
@@ -2208,6 +2335,8 @@ function revent() {
   nSpan.innerText = durum;
 
   mdiv.append(nSpan);
+
+  playTeyyip(pm);
 
   let nSpana = document.createElement("span");
   nSpana.setAttribute("class", "nSpan");
@@ -2256,6 +2385,7 @@ function win(winningSpin, winValue, betTotal) {
   items.forEach((x) => {
     checkFinish(x, 5);
   });
+  playTeyyip("win");
   if (winValue > 0) {
     let notification = document.createElement("div");
     notification.setAttribute("id", "notification");
