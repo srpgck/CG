@@ -1,20 +1,645 @@
-let bankValue = 1000;
+const database = {};
+database["set"] = (name, value) => {
+  localStorage.setItem(name, JSON.stringify(value));
+};
+database["get"] = (name) => {
+  let val = null;
+  try {
+    val = JSON.parse(localStorage.getItem(name));
+  } catch {}
+  return val;
+};
+database["remove"] = (name) => {
+  return localStorage.removeItem(name);
+};
+database["clear"] = () => {
+  return localStorage.clear();
+};
+let gameoverd = false;
+let teyyip = false;
+function Speak(msg, frc) {
+  if (frc) {
+  } else {
+    if (teyyip) {
+    } else {
+      return;
+    }
+  }
+  if ("speechSynthesis" in window) {
+    console.log("alh");
+    var voices = window.speechSynthesis.getVoices();
+    var spk = new SpeechSynthesisUtterance();
+
+    // Set the text.
+    spk.text = msg;
+
+    // Set the attributes.
+    spk.volume = 1;
+    spk.rate = 1;
+    spk.pitch = 1;
+
+    // If voices are available, select the default voice.
+    if (voices.length > 0) {
+      spk.voice = voices[0];
+    }
+
+    // Queue this utterance.
+    window.speechSynthesis.speak(spk);
+  }
+}
+
+const yazilar = [
+  "alicengizoyunları",
+  "Nahçivanda doğdum, Ben köylüyüm. - Üstad Alizade",
+  "O Allah The Almighty (yalanbilgi) - Sami Yusuf",
+  "mirsadmuratsarioglu_1453",
+  " Din penis gibidir. Sahip olabilirsin, sahip olmakla gurur duyabilirsin. Ancak! Onu toplumun içinde gösterme, onu çocukların kafasına zorla sokmaya çalışma, onunla kanun yazma ve lütfen onunla düşünme. ",
+  "Çalışan demir ışıldasaydı yarrağım florasan olurdu",
+  " Yarı yâr olanın yar sarar yarasını, yarı yâr olmayanın felek siker anasını. ",
+  " Hayat sik gibidir, bazen aşşağı, bazen yukarı. ama hiç bi zaman sonsuza kadar sert değildir! ",
+  "sevmeyi beceremedim, becerilmeyi sevdim. - alizade",
+  " Aşk dediğin şey sevdiğin birinin sikini senin amına sokmasından ibarettir. ",
+  " İşleyen demir paslanmazmış Ama sikim kurudu - a....",
+  " Laf sokarım derinden sikin oynar yerinden ",
+  "  Ateisti bile cennetime alırım ama animecileri asla (Allah) ) ",
+  " Ateşin odunu yakıp kül ettiği gibi animelerde insanın zekasını yakıp yok eder (Hadis-i Şerif) ",
+  " Seytan diyor ki Namaz kilmayan Babamdir, israf eden Kardesimdir, imam dan once secdeye egilen Oglumdur, Misafir gorunce sinirlenen kadin Annemdir, Acik ve ciplak gezen bayan esimdir, Besmele'siz yemege baslayan Evladimdır, Bu bilgiyi baskasiyla paylasan Düsmanim'dir Bu bilgiyi ogrenip de susan dostumdur RABBIM CUMLEMIZI SEYTAN DAN UZAK KULLARINDAN EYLESIN ",
+  "Dünyanın 🌍💅 Çivisi çıkmış ✈️😢🩻 Çivisi ✨💖 Erkekler erkekliğini 🤨🤑 Kadınlar kadınlığını 🥷🏻🩻 bilecek 🤐🫡😶‍🌫️ Arka kapım ✈️🚪 aralıkğğ 🍆🍆 Nedir bu kalabalık 📕💃🏻",
+  "Bu gerçekten, inanılmaz! - (D)Evrim Ağacı",
+  "Bu başka bir videonun konusu - (D)Evrim Ağacı",
+  "3 kuruşluk hayat bir kere versen nolur yani ? ",
+  "a.... küfür etmicektik",
+  "benimki miraça kadar, mirsadmuratsarioglu_1453'ün götüne kadar.",
+  "Bak GEY900 üm var aramızdaki farka bak a.. p... bak x im var beatsim var elim ayağım nerde vibratör titriyor - Deha Tuzcu",
+  "baybay komutanim anem banyo yaptircak",
+];
+let revents_1 = [
+  "Karın",
+  "Kocan",
+  "oğlun",
+  "kızın",
+  "Annen",
+  "Deha tuzcu",
+  "Sokaktaki adam",
+  "Eren karayılan",
+  "mirsadmuratsarıoglu_1453",
+  "eskisehir.saygideger.shitpost",
+  "sami yusuf",
+  "Eski karın",
+  "5. karın",
+  "aişe",
+  "muamed",
+  "dinci",
+  "deha tuzcu",
+  "enes baturun çarptığı ağac",
+  "sikilen egzoz borusu",
+  "kemal kılıçdaroglu",
+  "götüne motor takılıp araba yapılan hacı murat efendi",
+  "alizade",
+  "ibn haldun",
+  "yarrak-ül gaffariye",
+  "üstad necip fazıl",
+  "2. elizabeth",
+  "prens salmanın siki",
+  "karısı gözünün önünde sikilirken ezan okuyan imam (öyle bi okur ki ağlatır)",
+  "Ebu cehil",
+  "en çok asılan dekoratif ürün",
+  "93 yaşındaki eşref amca",
+  "tablet reis",
+  "ortadoğunun en iyi pilotu",
+  "bin ladin ailesi",
+  "filistini destekleyen anime kızı (2 dk önce infilak etti)",
+  "israil ajanı güvenlik",
+  "filistin ajanı güvenlik",
+  "Kalın Gelir nickli din kardeşimiz",
+  "doeda admini nickli din kardeşimiz",
+  "bebek görünce nickli din kardeşimiz",
+  "baciyaran4169 nickli din kardeşimiz",
+  "baldızterleten4169 nickli din kardeşimiz",
+  "azginboga5568 nickli din kardeşimiz",
+  "borsa kaplanı",
+  "balici",
+  "juncooka_asigim_sik_beni_🍆❤️‍🔥",
+  "Mihriban 44 İslami evlilik isteyen dul hatun",
+  "evrim ağacı",
+  "sakso5tl",
+];
+let revents_2B = [
+  "Götünü pazarladı ve sana XYZ TL getirdi+",
+  "Anasını pazarladı ve sana XYZ TL getirdi Ama yoldayken soyuldun ve XYZ TL paran gitti.-",
+  "Sana bütün parasını verdi ve sana XYZ TL getirdi+",
+  "Sülalenden birini sikti ve hastane masraflarını sana kitledi. XYZ TL paran gitti-",
+  "Sıra bende dedi ve seni sikti XYZ TL paran gitti-",
+  "Sıra bende dedi ve seni sikti bu iş sana XYZ TL getirdi+",
+  "Bir anda XYZ TL paranı diyanet işlerine bağışlamaya karar verdi ve bu parayı senden çaldı-",
+  "Sülalenden birine vibratör soktu ve hastane masraflarını sana kitledi. XYZ TL paran gitti-",
+  "Şarkı çıkartmak için paranı çaldı XYZ TL paran gitti-",
+  "Kendini beykamber efendimiz sandı ve bütün paranı iyilik için istedi sende XYZ TL para verdin-",
+  "Yeni dükkan açmak için senden XYZ TL para aldı-",
+  "Bütün paranla coca colayı boykot etti ve israil ajanları adresi karıştırıp seni öldürdü.0",
+  "Yeni sevgili buldu ve senden XYZ TL para çaldı-",
+  "Arabanı çalıp reisimizin sarayına girdiği için ömür boyu hapise atıldın.0",
+  "Basur olup XYZ TL sakladığın paranla basur ameliyatı oldu-",
+  "Senden apple vision pro aldı ve içinden hıyar çıktı. Bu yüzden evine misafir olarak, bir sümmeye gönderdi. Sümmeye kızımız, infilak etti ve öldün0",
+  "Sokakta giderken aklına bir fikir geldi ve lucifer michaelson (ibne olan) ile sevgili oldu. bu iş sana XYZ TL para getirdi.+",
+  "Adalet bakanı oldu ve ona pandik attığını hatırladı. Hakkında aranma kararı çıkartıldı.1",
+  "Ezan okunurken bir anda senin arabanın önünde namaz kılmaya başladı ve sen onu ezdin.0",
+  "Arabasındaki ilahi ile dans ederken bir anda önüne çıktın ve seni ezdi.0",
+  "Elon musk'a sakso çekti ve sana XYZ TL para getirdi.+",
+  "Kanepenin köşesinde sabahlarken girişimci aklını kullanarak yeni bir iş başlatı ve senden XYZ TL para çaldı.-",
+  "Dans eden kediyi ezdi ve polisler zenci olduğun için senin ezdiğini sandı.1",
+  "Uçağa bomba sokmaya çalıştı, bu yüzden slotların şansı rastgele bir şekilde etkilendi.*",
+  "Togg ile giderken arabasının önüne atladın ve 'yerli otomobilimiz ile beni ez' dedin oda seni ezdi.0",
+  "Azdı ve seni sikti, XYZ TL kazandın.+",
+  "Camide imamın ayaklarına boşaldı ve polise ifade verirken senin ona otuzbir (ayip) çektiğini söyledi bu yüzden polis sana XYZ TL para cezası yazdı.-",
+  "Sokakta LGBT yürüyüşüne katıldığı için slotların şansı rastgele bir şekilde etkilendi.*",
+  "Dağda eşşek sikerken yakalandı ama suçu senin üstüne yıktı Aranma seviyen değişti.1",
+  "X platformunda islama sövdüğü ortaya çıktı ve bunu kuzenim yazdı dedi. kuzeni sen olduğun için aranma seviyen değişti.1",
+  "Yutupta porno izlerken yakalandı ve bilgisayarı sana verdi polisler seni arıyor. Aranma seviyen değişti.1",
+  "İnternette xbox vs playstation kavgası çıkardığı için slotların şansı rastgele bir şekilde etkilendi.*",
+  "Sosyal medyada canlı yayın açmayı bırakıp senden XYZ TL para çaldı.-",
+  "Sosyal medyada canlı yayın açıp hottube yayını yaptı ve sana olan XYZ TL borcunu ödedi.+",
+  "Döndürüp kendine sokma yayını açıp sana XYZ TL para ödedi.+",
+  "İlahi dinlerken miraça yükseldiğinden, slotların şansı rastgele bir şekilde etkilendi.*",
+  "Prenses pembesi amı olduğunu idda etti ama bahtından kara çıktı ve sende bu ama bakmak için görevlendirildin ödülün ise XYZ TL.+",
+  "31 çekerken siki kırıldı hastane masraflarını sana kitledi XYZ TL gitti.-",
+  "Uçan dildo yapmak için senden XYZ TL para çaldı.-",
+  "Zeynep bastık fanı olduğu için hapise atılacaktı ama senin spotify hesabından dinlediği ortaya çıktı bu yüzden aranma seviyen değişti.1",
+  "Escorta gitmek için arabanı çaldı buda sana XYZ TL'ye patladı (sümmeyekizimiz).-",
+  "Spotify premium pro max aboneliğini senin kartından yaptı buda sana XYZ TL'ye patladı.-",
+  "Yanlışlıkla evine kargo söyledi sende o kargoyu sattın hesabına XYZ TL para geldi.+",
+  "sülalenden birini öldürdü ve XYZ TL kadar mirası sana kaldı.+",
+  "Ruletin altına XYZ kadar tl düşürdü sende çaldın.+",
+  "Sana büyü yaptı ve yolda giderken cebinden XYZ TL düştü.-",
+  "Padişah oldu ve bir ferman imzaladı, fermanda senin adın geçiyor ve gördüğünüz yerde sikin yazıyor.1",
+];
+let revents_2P = [
+  {
+    Content: "Seni sikmek istiyor",
+    Yes: "İsteğini gerçekleştir",
+    OnYes: [
+      "Senden XYZ TL çaldı.-",
+      "Seni bayılttı ve senin telefonundan ali babacanı aradı.1",
+      "Sana orospu muamelesi yaptı ve sana XYZ TL para ödedi.+",
+    ],
+    No: "Onu döv",
+    OnNo: [
+      "Feminist obezler derneğini çağırdı ve seni öldürdüler.0",
+      "Eline yataktaki dildoyu geçirdin ve kafasına vurdun. XYZ TL kazandın.+",
+      "",
+    ],
+  },
+];
+const shoplist = [
+  {
+    id: 0,
+    name: "Dildo",
+    price: 15000,
+    img: "./rolette/assets/cdla/shop/dildo.txt",
+    desc: "Ruleti dildo ile çevirerek, Ekstradan +20 şans puanı elde et!",
+    expiry: 1,
+    use: function () {
+      sansdegisikligi += 20;
+    },
+    whenexpired: function () {
+      sansdegisikligi -= 20;
+    },
+    executionid: 3,
+    finishid: 7,
+    type: "boost",
+  },
+  {
+    id: 1,
+    name: "Uçan otomatik kavramalı dildo",
+    price: 3000,
+    img: "./rolette/assets/cdla/shop/ucandildo.txt",
+    desc: "Ruleti Uçan dildo ile çevirerek, Ekstradan +69 şans puanı elde et!",
+    expiry: 1,
+    use: function () {
+      sansdegisikligi += 69;
+    },
+    whenexpired: function () {
+      sansdegisikligi -= 69;
+    },
+    executionid: 3,
+    finishid: 7,
+    type: "boost",
+  },
+  {
+    id: 2,
+    name: "İtalyanın gemlik şehrinden çıkan yerli ve milli togg Otomobilimiz",
+    price: 20000,
+    img: "./rolette/assets/cdla/shop/togg.txt",
+    desc: "Rulete togg otomobilin ile giderek, Paranı 2'ye katla!",
+    expiry: 1,
+    use: function () {
+      bankValue *= 2;
+    },
+    whenexpired: function () {},
+    executionid: 3,
+    finishid: 3,
+    type: "boost",
+  },
+  {
+    id: 3,
+    name: "117 yıldır yanan am",
+    price: 2000,
+    img: "./rolette/assets/cdla/shop/117yil.txt",
+    desc: "Casinonun ışığını 117 yıldır yanan am ile değiştirerek, Rastgele olayların gelme olasılığını arttır.",
+    expiry: 10,
+    use: function () {
+      revs = 0.5;
+    },
+    whenexpired: function () {
+      revs = 0.9;
+    },
+    executionid: 3,
+    finishid: 7,
+    type: "boost",
+  },
+  {
+    id: 4,
+    name: "Gemicik",
+    price: 2000,
+    img: "./rolette/assets/cdla/shop/gemicik.txt",
+    desc: "Casinoyu gemiciğe taşı ve, casionun temasını değiştir!",
+    expiry: 0,
+    use: function () {
+      theme = "gemicik";
+      reloadtheme("gemicik");
+    },
+    whenexpired: function () {
+      theme = "classic";
+      reloadtheme("classic");
+    },
+    executionid: 3,
+    finishid: 10,
+    type: "theme",
+  },
+  {
+    id: 5,
+    name: "Teyyip (para çalabiliyor)",
+    price: 2310,
+    img: "./rolette/assets/cdla/shop/teyyip.txt",
+    desc: "Casinoya teyyip koy ve teyyip ile ilahi dinle! (Dikkat teyyip para çalabilir!)",
+    expiry: 0,
+    use: function () {
+      teyyip = true;
+    },
+    whenexpired: function () {
+      teyyip = true;
+    },
+    executionid: 3,
+    finishid: 8,
+    type: "addon",
+  },
+  {
+    id: 6,
+    name: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi",
+    price: 3169,
+    img: "./rolette/assets/cdla/shop/yakisikli.txt",
+    desc: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi ile rastgele olaylarda asla ölme!",
+    expiry: 10,
+    use: function () {
+      olumsuz = true;
+    },
+    whenexpired: function () {
+      olumsuz = false;
+    },
+    executionid: 3,
+    finishid: 11,
+    type: "boost",
+  },
+  {
+    id: 7,
+    name: "kürtaj olmuş bodrumlu kurpiyer",
+    price: 20000,
+    img: "./rolette/assets/cdla/shop/kurpiyer.txt",
+    desc: "kürtaj olmuş bodrumlu kurpiyer ile ekstra can al!",
+    expiry: 1,
+    use: function () {
+      can = 1;
+    },
+    whenexpired: function () {
+      can = 0;
+    },
+    executionid: 3,
+    finishid: 6,
+    type: "boost",
+  },
+  {
+    id: 8,
+    name: "Kürt başlıklı kız",
+    price: 4999,
+    img: "./rolette/assets/cdla/shop/kurtbasliklikiz.txt",
+    desc: "Biz o hikayeyi kurttanda dinledik kürt başlıklı kız kaşarlık yapmış diyenlere özel kürt başlıklı kız teması!",
+    expiry: 0,
+    use: function () {
+      theme = "kurtbk";
+      reloadtheme("kurtbk");
+    },
+    whenexpired: function () {
+      theme = "classic";
+      reloadtheme("classic");
+    },
+    executionid: 3,
+    finishid: 10,
+    type: "theme",
+  },
+];
+const themes = {
+  classic: "background-color: #016D29;color: #fff;",
+  gemicik: "color: #fff;background-image:url('gemicik');",
+  kurtbk: "color: #fff;background-image:url('kurtbk');",
+};
+const themes_RAND = {
+  classic: 0,
+  gemicik: 15,
+  kurtbk: 15,
+};
+let songs = {};
+let song_DURS = {
+  win: {
+    az: [
+      {
+        md: "mutlu",
+        sb: "pozitif",
+      },
+      {
+        md: "normal",
+        sb: "saçma",
+      },
+    ],
+    cok: [
+      {
+        md: "mutlu",
+        sb: "kazanma",
+      },      {
+        md: "mutlu",
+        sb: "pozitif",
+      },
+    ],
+  },
+  lose: {
+    az: [
+      {
+        md: "sinirli",
+        sb: "main",
+      },
+      {
+        md: "üzgün",
+        sb: "ölüm",
+      },
+    ],
+    cok: [
+      {
+        md: "üzgün",
+        sb: "dalga",
+      },
+      {
+        md: "üzgün",
+        sb: "negatif",
+      },
+    ],
+  },
+  die: {
+    az: [
+      {
+        md: "üzgün",
+        sb: "dalga",
+      },
+      {
+        md: "üzgün",
+        sb: "negatif",
+      },
+    ],
+    cok: [
+      {
+        md: "sinirli",
+        sb: "main",
+      },
+      {
+        md: "üzgün",
+        sb: "ölüm",
+      },
+    ],
+  },
+  paraaz: {
+    az: [
+      {
+        md: "üzgün",
+        sb: "dalga",
+      },
+      {
+        md: "üzgün",
+        sb: "negatif",
+      },
+    ],
+    cok: [
+      {
+        md: "sinirli",
+        sb: "main",
+      },
+      {
+        md: "üzgün",
+        sb: "ölüm",
+      },
+    ],
+  },
+  paraart: {
+    az: [
+      {
+        md: "normal",
+        sb: "saçma",
+      },      {
+        md: "üzgün",
+        sb: "dalga",
+      },
+    ],
+    cok: [
+      {
+        md: "mutlu",
+        sb: "kazanma",
+      },
+      {
+        md: "mutlu",
+        sb: "pozitif",
+      },
+    ],
+  },
+  random: {
+    az: [
+      {
+        md: "Şarkı",
+        sb: "az",
+      },
+      {
+        md: "Şarkı",
+        sb: "cok",
+      },
+    ],
+    cok: [
+      {
+        md: "normal",
+        sb: "saçma",
+      },
+      {
+        md: "Şarkı",
+        sb: "cok",
+      },
+    ],
+  },
+};//random,paraart,paraaz,die,lose,win
+loadSongs()
+function playTeyyip(durum){
+  let rndm = Math.random()
+  let sec = ""
+  if(rndm > 0.7){
+    sec = "az"
+  }else{
+    sec = "cok"
+  }
+  if(song_DURS[durum] != null){
+    let itm = song_DURS[durum][sec]
+    let rndmd = Math.floor(Math.random()*itm.length);
+    let sel = itm[rndmd]
+    console.log(itm,rndmd)
+    let sngs = songs[sel["md"]][sel["sb"]]["_files"]
+    let sngsrndm = Math.floor(Math.random()*sngs.length);
+    let selsong = sngs[sngsrndm];
+    PlayAudio("./assets/cdla/sfx/"+sel["md"]+"/"+sel["sb"]+"/"+selsong,0)
+  }
+}
+function loadSongs() {
+  fetch(chrome.extension.getURL("./rolette/assets/cdla/sfx/manifest.json"))
+    .then((resp) => resp.json())
+    .then(function (jsonData) {
+      songs = jsonData;
+    });
+}
+const audio = new Audio();
+var tbp = [];
+var cp = {};
+function PlayAudio(konm, dur) {
+  audio.src = konm;
+  audio.play();
+  cp = { konm: konm, dur: dur };
+}
+/*setInterval(() => {
+  if (audio.duration == cp["dur"]["end"]) {
+    audio.pause();
+  }
+}, 100);*/
 let currentBet = 0;
 let wager = 5;
 let lastWager = 0;
 let bet = [];
 let numbersBet = [];
-let theme = "classic.css";
+
 let previousNumbers = [];
 
+let bankValue = 1000;
 let items = [];
-
+let theme = "classic";
 let aranma = 0;
 let sansdegisikligi = 0;
-
 let revs = 0.9;
 let can = 0;
 let olumsuz = false;
+let HOLDER = document.createElement("div");
+HOLDER.className = "holderr";
+let container = document.createElement("div");
+container.setAttribute("id", "container");
+document.body.append(HOLDER);
+HOLDER.appendChild(document.getElementById("AH_SHP"));
+HOLDER.appendChild(container);
+function reloadBankValue() {
+  try {
+    document.getElementById("bankSpan").innerText =
+      "" + bankValue.toLocaleString("en-GB") + "";
+  } catch {}
+}
+
+function saveGame() {
+  let x = {
+    bankValue: bankValue + currentBet,
+    items: items,
+    theme: theme,
+    aranma: aranma,
+    sansdegisikligi: sansdegisikligi,
+    revs: revs,
+    can: can,
+    olumsuz: olumsuz,
+  };
+  database.set("gamesave", x);
+}
+function purgeSave() {
+  database.remove("gamesave");
+}
+document.getElementById("svysfrl").onclick = (x) => {
+  notify(
+    "Eminmisin?",
+    "Bütün ilerlemen, itemlerin, temaların, eklentilerin. Kaybolacak.",
+    "Eminim",
+    () => {
+      purgeSave();
+      location.reload();
+    },
+    "Yok sikimin keyfine basytım",
+    () => {
+      Speak("salak.", true);
+    }
+  );
+};
+loadSave();
+let intgameover = false;
+setInterval(function () {
+  saveGame();
+  reloadBankValue();
+
+  if (!intgameover) {
+    if (bankValue + currentBet <= 0) {
+      intgameover = true;
+      if (gameoverd == false) {
+        gameOver();
+      }
+    }
+  }
+}, 1000);
+
+function loadSave() {
+  let x = {
+    bankValue: bankValue,
+    items: items,
+    theme: theme,
+    aranma: aranma,
+    sansdegisikligi: sansdegisikligi,
+    revs: revs,
+    can: can,
+    olumsuz: olumsuz,
+  };
+  let xy = database.get("gamesave");
+  if (typeof xy == "object" && xy != null) {
+    x = xy;
+  } else {
+  }
+  bankValue = x["bankValue"];
+  items = x["items"];
+  theme = x["theme"];
+  aranma = x["aranma"];
+  sansdegisikligi = x["sansdegisikligi"];
+  revs = x["revs"];
+  can = x["can"];
+  olumsuz = x["olumsuz"];
+  reloadBankValue();
+  reloadItems();
+  if (bankValue <= 0) {
+    if (gameoverd == false) {
+      gameOver();
+    }
+  }
+  reloadtheme(theme);
+}
 
 let numRed = [
   1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36,
@@ -23,13 +648,30 @@ let wheelnumbersAC = [
   0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23,
   8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32,
 ];
-let HOLDER = document.createElement("div");
-HOLDER.className = "holderr";
-let container = document.createElement("div");
-container.setAttribute("id", "container");
-document.body.append(HOLDER);
-HOLDER.appendChild(container);
 
+function reloadtheme(tn) {
+  let theme = themes[tn];
+  let bgi = theme.split("'")[1];
+  if (theme != null) {
+    console.log(themes_RAND[bgi]);
+    if (themes_RAND[bgi] == 0 || themes_RAND[bgi] == null) {
+      //load colr
+      HOLDER.setAttribute("style", theme);
+    } else {
+      //load img
+      let wb64 = "";
+      let rndmd = Math.floor(Math.random() * themes_RAND[bgi]) + 1;
+      getmedia(
+        "./rolette/assets/cdla/themes/" + bgi + "/" + rndmd + ".txt"
+      ).then((x) => {
+        HOLDER.setAttribute("style", theme.replace(bgi, x));
+      });
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
 function getrndmcdla() {
   const randomNumber = Math.floor(Math.random() * 115) + 1;
   const url = chrome.runtime.getURL("./cdla/noti/" + randomNumber + ".txt");
@@ -61,251 +703,570 @@ function getmedia(konm) {
     });
 }
 startGame();
+function notify(msg, desc, btn, btncb, btn2, btn2cb) {
+  let shwd = container;
+  if (document.getElementById("shopms").style.visibility == "visible") {
+    shwd = document.getElementById("shopms");
+  }
+  let notification = document.createElement("div");
+  notification.setAttribute("id", "notification");
+  notification.className = "notification";
+  notification.style.zIndex =
+    "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999";
 
-const shoplist = [
-  {
-    name: "Dildo",
-    price: 15000,
-    img: "./rolette/assets/cdla/shop/dildo.txt",
-    desc: "Ruleti dildo ile çevirerek, Ekstradan +20 şans puanı elde et!",
-    expiry: 1,
-    use: function () {
-      sansdegisikligi += 20;
-    },
-    whenexpired: function () {
-      sansdegisikligi -= 20;
-    },
-  },
-  {
-    name: "Uçan otomatik kavramalı dildo",
-    price: 30000,
-    img: "./rolette/assets/cdla/shop/ucandildo.txt",
-    desc: "Ruleti Uçan dildo ile çevirerek, Ekstradan +69 şans puanı elde et!",
-    expiry: 1,
-    use: function () {
-      sansdegisikligi += 69;
-    },
-    whenexpired: function () {
-      sansdegisikligi -= 69;
-    },
-  },
-  {
-    name: "İtalyanın gemlik şehrinden çıkan yerli ve milli togg Otomobilimiz",
-    price: 200000,
-    img: "./rolette/assets/cdla/shop/togg.txt",
-    desc: "Rulete togg otomobilin ile giderek, Paranı 2'ye katla!",
-    expiry: 1,
-    use: function () {
-      bankValue *= 2;
-    },
-  },
-  {
-    name: "117 yıldır yanan am",
-    price: 2000,
-    img: "./rolette/assets/cdla/shop/117yil.txt",
-    desc: "Casinonun ışığını 117 yıldır yanan am ile değiştirerek, Rastgele olayların gelme olasılığını arttır.",
-    expiry: 10,
-    use: function () {
-      revs = 0.5;
-    },
-    whenexpired: function () {
-      revs = 0.9;
-    },
-  },
-  {
-    name: "Gemicik",
-    price: 2000,
-    img: "./rolette/assets/cdla/shop/gemicik.txt",
-    desc: "Casinoyu gemiciğe taşı ve, casionun temasını değiştir!",
-    expiry: 0,
-    use: function () {
-      theme = "gemicik.css";
-      reloadtheme();
-    },
-    whenexpired: function () {
-      theme = "classic.css";
-      reloadtheme();
-    },
-  },
-  {
-    name: "Teyyip (para çalabiliyor)",
-    price: 27929,
-    img: "./rolette/assets/cdla/shop/teyyip.txt",
-    desc: "Casinoya teyyip koy ve teyyip ile ilahi dinle! (Dikkat teyyip para çalabilir!)",
-    expiry: 0,
-    use: function () {
-      teyyip = true;
-    },
-    whenexpired: function () {
-      teyyip = true;
-    },
-  },
-  {
-    name: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi",
-    price: 31690,
-    img: "./rolette/assets/cdla/shop/yakisikli.txt",
-    desc: "yakisikliguvenlik5188'in spesiyal tüylü kelepçesi ile rastgele olaylarda asla ölme!",
-    expiry: 10,
-    use: function () {
-      olumsuz = true;
-    },
-    whenexpired: function () {
-      olumsuz = false;
-    },
-  },
-  {
-    name: "kürtaj olmuş bodrumlu kurpiyer",
-    price: 398889,
-    img: "./rolette/assets/cdla/shop/kurpiyer.txt",
-    desc: "kürtaj olmuş bodrumlu kurpiyer ile ekstra can al!",
-    expiry: 1,
-    use: function () {
-      can = 1;
-    },
-    whenexpired: function () {
-      can = 0;
-    },
-  },
-];
+  let notificati2eon = document.createElement("div");
+  notificati2eon.style.height = "100vh";
+  notificati2eon.style.width = "100vw";
+  notificati2eon.style.justifyContent = "center";
+  notificati2eon.style.alignContent = "center";
+  notificati2eon.style.zIndex =
+    "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999";
+  notificati2eon.style.position = "absolute";
+
+  let nimage = document.createElement("img");
+
+  getrndmcdla().then((x) => {
+    nimage.src = x;
+  });
+  nimage.style.objectFit = "fill";
+  nimage.style.display = "flex";
+  nimage.style.position = "absolute";
+  nimage.style.zIndex = 900;
+  nimage.style.width = "100%";
+  nimage.style.height = "100%";
+
+  let mdiv = document.createElement("div");
+  mdiv.style.position = "absolute";
+  mdiv.style.width = "100%";
+  mdiv.style.height = "100%";
+  mdiv.style.zIndex = "9999999999999999999999999999";
+
+  let nSpan = document.createElement("span");
+  nSpan.setAttribute("class", "nSpan");
+  nSpan.innerText = msg;
+
+  mdiv.append(nSpan);
+  if (desc != null && typeof desc == "string") {
+    let nSpana2 = document.createElement("span");
+    nSpana2.setAttribute("class", "nSpan");
+
+    nSpana2.innerText = desc;
+    nSpana2.style.fontSize = "15px";
+    mdiv.append(nSpana2);
+  }
+  let nBtn = document.createElement("div");
+  nBtn.setAttribute("class", "nBtn");
+  nBtn.innerText = btn;
+  if (btncb == null) {
+    nBtn.onclick = function () {
+      notification.remove();
+      notificati2eon.remove();
+    };
+  } else {
+    nBtn.onclick = function () {
+      notification.remove();
+      notificati2eon.remove();
+      btncb();
+    };
+  }
+  mdiv.append(nBtn);
+  if (btn2 != null) {
+    let nBtn2 = document.createElement("div");
+    nBtn2.setAttribute("class", "nBtn");
+    nBtn2.innerText = btn2;
+    if (btncb == null) {
+      nBtn2.onclick = function () {
+        notification.remove();
+        notificati2eon.remove();
+      };
+    } else {
+      nBtn2.onclick = function () {
+        notification.remove();
+        notificati2eon.remove();
+        btn2cb();
+      };
+    }
+    mdiv.append(nBtn2);
+  }
+  notification.appendChild(mdiv);
+  notification.appendChild(nimage);
+
+  shwd.prepend(notification);
+  shwd.prepend(notificati2eon);
+}
+function checkFinish(itm, cf) {
+  if (itm["expiry"] == 0) {
+    return;
+  }
+
+  if (cf == itm["finishid"]) {
+    let nwit = [];
+    items.forEach((x) => {
+      if (x["UniqueId"] == itm["UniqueId"]) {
+        x["expsay"] = x["expsay"] + 1;
+        itm = x;
+        nwit.push(x);
+      } else {
+        nwit.push(x);
+      }
+    });
+    items = nwit;
+    if (itm["expsay"] >= itm["expiry"]) {
+      document.getElementById(itm["UniqueId"] + itm["id"]).remove();
+      itm["whenexpired"]();
+      let nwit = [];
+      items.forEach((x) => {
+        if (x["UniqueId"] != itm["UniqueId"]) {
+          nwit.push(x);
+        }
+      });
+      items = nwit;
+    }
+  }
+}
+setInterval(function () {
+  items.forEach((x) => {
+    checkFinish(x, 2);
+  });
+}, 1000);
+function useItem(itm, cf, when) {
+  if (cf == itm["executionid"]) {
+    if (itm["expiry"] == 0) {
+      //0-2-4 on
+      //1-3-5 off
+      if (itm["executionid"] == 8 || itm["finishid"] == 8) {
+        if (itm["expsay"] % 2 == 0) {
+          itm["use"]();
+          itm["executed"] = true;
+        } else {
+          itm["whenexpired"]();
+        }
+
+        itm["expsay"] = itm["expsay"] + 1;
+      } else if (itm["executionid"] == 10 || itm["finishid"] == 10) {
+        if (when) {
+          itm["whenexpired"]();
+        } else {
+          itm["use"]();
+        }
+      }
+    } else if (itm["expsay"] <= itm["expiry"]) {
+      itm["use"]();
+    }
+  }
+}
+function reloadItems() {
+  let oit = items;
+  items = [];
+  document.getElementById("itemholder").childNodes.forEach((x) => {
+    x.remove();
+  });
+  oit.forEach((x) => {
+    if (x["executed"]) {
+      BuyItem(shoplist[x["id"]], true);
+    } else if (x["expiry"] == 0) {
+      BuyItem(shoplist[x["id"]], true);
+    } else if (x["expsay"] < x["expiry"]) {
+      BuyItem(shoplist[x["id"]], true);
+    } else {
+      console.log(x);
+    }
+  });
+}
+
+function BuyItem(itemce, rld) {
+  if (!rld) {
+    let found = false;
+    items.forEach((x) => {
+      if (x["id"] == itemce["id"]) {
+        found = true;
+      }
+    });
+    if (found) {
+      notify("Hediyelik dükkanımı sandın burayı ?", null, "ossur.dilerim.🌹");
+      return;
+    }
+    if (bankValue >= itemce["price"]) {
+      bankValue -= itemce["price"];
+    } else {
+      notify("fukara.", null, "ossur.dilerim.🌹");
+      return;
+    }
+  }
+  let itm = {
+    id: itemce["id"],
+    expsay: 0,
+    expiry: itemce["expiry"],
+    use: itemce["use"],
+    whenexpired: itemce["whenexpired"],
+    executionid: itemce["executionid"],
+    finishid: itemce["finishid"] || itemce["exexecutionidi"],
+    executed: false,
+    finishexecuted: false,
+    UniqueId: items.length + 1,
+    img: itemce["img"],
+    type: itemce["type"],
+    /*
+0=spin
+1=before spin
+2=while
+3=rn
+4=die
+5=win
+6=lose
+7=spin finished
+8=click logo
+9=revent finish
+10=toggle
+*/
+  };
+  let ih = document.getElementById("itemholder");
+
+  let itm_md = document.createElement("div");
+  itm_md.style.width = "80px";
+  itm_md.style.height = "100%";
+  itm_md.style.justifyContent = "center";
+  itm_md.style.textAlign = "center";
+  itm_md.style.position = "relative";
+  itm_md.style.display = "inline-block";
+  itm_md.id = itm["UniqueId"] + itm["id"];
+
+  let itm_d = document.createElement("div");
+  itm_d.className = "overlay";
+  itm_d.style.cursor = "pointer";
+  itm_d.innerText = "Can: " + (itm["expiry"] == 0 ? "Sonsuz" : itm["expiry"]);
+  itm_d.onclick = () => {
+    if (itemce["type"] == "theme") {
+      notify(
+        itemce["name"],
+        itemce["desc"] +
+          "\nCanı : " +
+          (itemce["expiry"] == 0 ? "Sonsuz" : itemce["expiry"]),
+        "Bu temayı Kullan",
+        () => {
+          useItem(itm, 3, false);
+        },
+        "Klasik temayı kullan",
+        () => {
+          useItem(itm, 3, true);
+        }
+      );
+    } else {
+      notify(
+        itemce["name"],
+        itemce["desc"] +
+          "\nCanı : " +
+          (itemce["expiry"] == 0 ? "Sonsuz" : itemce["expiry"]),
+        "bu bilgileri götüme sokacağım teşekürler",
+        null,
+        "napim"
+      );
+    }
+  };
+  itm_md.appendChild(itm_d);
+
+  let itm_im = document.createElement("img");
+
+  itm_im.style.borderRadius = "6px";
+  itm_im.style.width = "100%";
+  itm_im.style.height = "100%";
+  getmedia(itemce["img"]).then((x) => {
+    itm_im.src = x;
+  });
+
+  itm_md.appendChild(itm_im);
+
+  ih.appendChild(itm_md);
+  useItem(itm, 3);
+  items.push(itm);
+  checkFinish(itm, 3);
+  notify(itemce["name"] + " Envanterine Eklendi", null, "tamam(tr)");
+}
 
 function OpenShop() {
   let ms = document.getElementById("shopms");
   ms.style.visibility = "visible";
   let sit = document.getElementById("shop_itemhandler");
-  let fd = shoplist.length / 8;
-  //if (fd >= 1) {
-  //TODO
-  //} else {
-  let if1 = document.createElement("div");
-  //height: 200px; width: 100%; display: flex; position: relative; flex-direction: row; gap: 10px; justify-content: center;
-  if1.style.height = "200px";
-  if1.style.width = "flex";
-  if1.style.position = "relative";
-  if1.style.flexDirection = "row";
-  if1.style.gap = "40px";
-  if1.style.justifyContent = "center";
-  if1.style.display = "flex";
-  for (i = 0; i < shoplist.length; i++) {
-    var ce = shoplist[i];
-    let sitt = document.createElement("div");
-    //display: flex; flex-direction: column; height: 148px; width: 148px;
-    sitt.style.display = "flex";
-    sitt.style.flexDirection = "column";
-    sitt.style.height = "148px";
-    sitt.style.width = "148px";
-
-    let imgd = document.createElement("div");
-
-    let imgdimg = document.createElement("img");
-
-    imgdimg.className = " object-fill h-screen w-screen ";
-    getmedia(ce["img"]).then((x) => {
-      imgdimg.src = x;
-    });
-    imgdimg.style.borderRadius = "6px";
-    imgdimg.style.height = "120px";
-    imgdimg.style.width = "100%";
-    imgdimg.style.objectFit = "fill";
-
-    imgd.appendChild(imgdimg);
-
-    sitt.appendChild(imgd);
-
-    let bhd = document.createElement("div");
-
-    let bhdbh = document.createElement("div");
-
-    bhdbh.className = " shopbutton ";
-    bhdbh.style.cursor = "pointer";
-    let sunii = i;
-    bhdbh.addEventListener("click", (ev) => {
-      ce = shoplist[sunii];
-      console.log(sunii);
-
-      let notification = document.createElement("div");
-      notification.id = ce["name"] + "SI" + ce["expiry"];
-
-      notification.setAttribute("id", "notification");
-      notification.className = "notification";
-      notification.style.zIndex = 999999999999999;
-
-      let notificati2eon = document.createElement("div");
-      notificati2eon.style.height = "100vh";
-      notificati2eon.style.width = "100vw";
-      notificati2eon.style.justifyContent = "center";
-      notificati2eon.style.alignContent = "center";
-      notificati2eon.style.zIndex = 9999;
-      notificati2eon.style.position = "absolute";
-
-      let nimage = document.createElement("img");
-
-      getmedia(ce["img"]).then((x) => {
-        nimage.src = x;
-      });
-      nimage.style.objectFit = "fill";
-      nimage.style.display = "flex";
-      nimage.style.position = "absolute";
-      nimage.style.zIndex = 900;
-      nimage.style.width = "100%";
-      nimage.style.height = "100%";
-
-      let mdiv = document.createElement("div");
-      mdiv.style.position = "absolute";
-      mdiv.style.width = "100%";
-      mdiv.style.height = "100%";
-      mdiv.style.zIndex = 9999;
-      let nSpan = document.createElement("span");
-      nSpan.setAttribute("class", "nSpan");
-
-      mdiv.append(nSpan);
-
-      let nSpana = document.createElement("span");
-      nSpana.setAttribute("class", "nSpan");
-
-      nSpana.innerText = ce["desc"];
-      nSpana.style.fontSize = "15px";
-      mdiv.append(nSpana);
-
-      let nSpana2 = document.createElement("span");
-      nSpana2.setAttribute("class", "nSpan");
-
-      nSpana2.innerText =
-        "\nCanı : " + (ce["expiry"] == 0 ? "Sonsuz" : ce["expiry"]);
-      nSpana2.style.fontSize = "15px";
-      mdiv.append(nSpana2);
-      let nBtn = document.createElement("div");
-      nBtn.setAttribute("class", "nBtn");
-      nBtn.innerText = "Satın al (" + ce["price"] + " TL)";
-      nBtn.onclick = function () {
-        notification.remove();
-        notificati2eon.remove();
-      };
-      mdiv.append(nBtn);
-      let nBtn2 = document.createElement("div");
-      nBtn2.setAttribute("class", "nBtn");
-      nBtn2.innerText = "Siktiri çek";
-      nBtn2.onclick = function () {
-        notification.remove();
-        notificati2eon.remove();
-      };
-      mdiv.append(nBtn2);
-      notification.appendChild(mdiv);
-      notification.appendChild(nimage);
-
-      ms.prepend(notification);
-      ms.prepend(notificati2eon);
-    });
-
-    bhdbh.innerText = ce["name"];
-
-    bhd.appendChild(bhdbh);
-
-    sitt.appendChild(bhd);
-
-    if1.appendChild(sitt);
-    // }
+  let fd = shoplist.length / 9;
+  if (fd > Math.floor(fd)) {
+    fd = Math.floor(fd) + 1;
   }
-  sit.appendChild(if1);
+  if (fd >= 1) {
+    let oui = 0;
+    for (i = 0; i < fd; i++) {
+      let if1 = document.createElement("div");
+      //height: 200px; width: 100%; display: flex; position: relative; flex-direction: row; gap: 10px; justify-content: center;
+      if1.style.height = "200px";
+      if1.style.width = "flex";
+      if1.style.position = "relative";
+      if1.style.flexDirection = "row";
+      if1.style.gap = "40px";
+      if1.style.justifyContent = "start";
+      if1.style.marginLeft = "5px";
+      if1.style.display = "flex";
+
+      for (i2 = 0; i2 < 9; i2++) {
+        if (oui >= shoplist.length) {
+          break;
+        }
+        let sitt = document.createElement("div");
+        //display: flex; flex-direction: column; height: 148px; width: 148px;
+        sitt.style.display = "flex";
+        sitt.style.flexDirection = "column";
+        sitt.style.height = "148px";
+        sitt.style.width = "148px";
+        var ce = shoplist[oui];
+        let imgd = document.createElement("div");
+
+        let imgdimg = document.createElement("img");
+
+        imgdimg.className = " object-fill h-screen w-screen ";
+        getmedia(ce["img"]).then((x) => {
+          imgdimg.src = x;
+        });
+        imgdimg.style.borderRadius = "6px";
+        imgdimg.style.height = "120px";
+        imgdimg.style.width = "100%";
+        imgdimg.style.objectFit = "fill";
+
+        imgd.appendChild(imgdimg);
+
+        sitt.appendChild(imgd);
+
+        let bhd = document.createElement("div");
+
+        let bhdbh = document.createElement("div");
+
+        bhdbh.className = " shopbutton ";
+        bhdbh.style.cursor = "pointer";
+        let sunii = oui;
+        oui += 1;
+        bhdbh.addEventListener("click", (ev) => {
+          ce = shoplist[sunii];
+          console.log(sunii);
+
+          let notification = document.createElement("div");
+          notification.id = ce["name"] + "SI" + ce["expiry"];
+
+          notification.setAttribute("id", "notification");
+          notification.className = "notification";
+          notification.style.zIndex = 999999999999999;
+
+          let notificati2eon = document.createElement("div");
+          notificati2eon.style.height = "100vh";
+          notificati2eon.style.width = "100vw";
+          notificati2eon.style.justifyContent = "center";
+          notificati2eon.style.alignContent = "center";
+          notificati2eon.style.zIndex = 9999;
+          notificati2eon.style.position = "absolute";
+
+          let nimage = document.createElement("img");
+
+          getmedia(ce["img"]).then((x) => {
+            nimage.src = x;
+          });
+          nimage.style.objectFit = "fill";
+          nimage.style.display = "flex";
+          nimage.style.position = "absolute";
+          nimage.style.zIndex = 900;
+          nimage.style.width = "100%";
+          nimage.style.height = "100%";
+
+          let mdiv = document.createElement("div");
+          mdiv.style.position = "absolute";
+          mdiv.style.width = "100%";
+          mdiv.style.height = "100%";
+          mdiv.style.zIndex = 9999;
+          let nSpan = document.createElement("span");
+          nSpan.setAttribute("class", "nSpan");
+
+          mdiv.append(nSpan);
+
+          let nSpana = document.createElement("span");
+          nSpana.setAttribute("class", "nSpan");
+
+          nSpana.innerText = ce["desc"];
+          nSpana.style.fontSize = "15px";
+          mdiv.append(nSpana);
+
+          let nSpana2 = document.createElement("span");
+          nSpana2.setAttribute("class", "nSpan");
+
+          nSpana2.innerText =
+            "\nCanı : " + (ce["expiry"] == 0 ? "Sonsuz" : ce["expiry"]);
+          nSpana2.style.fontSize = "15px";
+          mdiv.append(nSpana2);
+          let nBtn = document.createElement("div");
+          nBtn.setAttribute("class", "nBtn");
+          nBtn.innerText = "Satın al (" + ce["price"] + " TL)";
+          nBtn.onclick = function () {
+            BuyItem(ce);
+            notification.remove();
+            notificati2eon.remove();
+          };
+          mdiv.append(nBtn);
+          let nBtn2 = document.createElement("div");
+          nBtn2.setAttribute("class", "nBtn");
+          nBtn2.innerText = "Siktiri çek";
+          nBtn2.onclick = function () {
+            notification.remove();
+            notificati2eon.remove();
+          };
+          mdiv.append(nBtn2);
+          notification.appendChild(mdiv);
+          notification.appendChild(nimage);
+
+          ms.prepend(notification);
+          ms.prepend(notificati2eon);
+        });
+
+        bhdbh.innerText = ce["name"];
+
+        bhd.appendChild(bhdbh);
+
+        sitt.appendChild(bhd);
+
+        if1.appendChild(sitt);
+
+        // }
+      }
+
+      sit.appendChild(if1);
+    }
+  } else {
+    let if1 = document.createElement("div");
+    //height: 200px; width: 100%; display: flex; position: relative; flex-direction: row; gap: 10px; justify-content: center;
+    if1.style.height = "200px";
+    if1.style.width = "flex";
+    if1.style.position = "relative";
+    if1.style.flexDirection = "row";
+    if1.style.gap = "40px";
+    if1.style.justifyContent = "center";
+    if1.style.display = "flex";
+    for (i = 0; i < shoplist.length; i++) {
+      let sitt = document.createElement("div");
+      //display: flex; flex-direction: column; height: 148px; width: 148px;
+      sitt.style.display = "flex";
+      sitt.style.flexDirection = "column";
+      sitt.style.height = "148px";
+      sitt.style.width = "148px";
+      var ce = shoplist[i];
+      let imgd = document.createElement("div");
+
+      let imgdimg = document.createElement("img");
+
+      imgdimg.className = " object-fill h-screen w-screen ";
+      getmedia(ce["img"]).then((x) => {
+        imgdimg.src = x;
+      });
+      imgdimg.style.borderRadius = "6px";
+      imgdimg.style.height = "120px";
+      imgdimg.style.width = "100%";
+      imgdimg.style.objectFit = "fill";
+
+      imgd.appendChild(imgdimg);
+
+      sitt.appendChild(imgd);
+
+      let bhd = document.createElement("div");
+
+      let bhdbh = document.createElement("div");
+
+      bhdbh.className = " shopbutton ";
+      bhdbh.style.cursor = "pointer";
+      let sunii = i;
+      bhdbh.addEventListener("click", (ev) => {
+        ce = shoplist[sunii];
+        console.log(sunii);
+
+        let notification = document.createElement("div");
+        notification.id = ce["name"] + "SI" + ce["expiry"];
+
+        notification.setAttribute("id", "notification");
+        notification.className = "notification";
+        notification.style.zIndex = 999999999999999;
+
+        let notificati2eon = document.createElement("div");
+        notificati2eon.style.height = "100vh";
+        notificati2eon.style.width = "100vw";
+        notificati2eon.style.justifyContent = "center";
+        notificati2eon.style.alignContent = "center";
+        notificati2eon.style.zIndex = 9999;
+        notificati2eon.style.position = "absolute";
+
+        let nimage = document.createElement("img");
+
+        getmedia(ce["img"]).then((x) => {
+          nimage.src = x;
+        });
+        nimage.style.objectFit = "fill";
+        nimage.style.display = "flex";
+        nimage.style.position = "absolute";
+        nimage.style.zIndex = 900;
+        nimage.style.width = "100%";
+        nimage.style.height = "100%";
+
+        let mdiv = document.createElement("div");
+        mdiv.style.position = "absolute";
+        mdiv.style.width = "100%";
+        mdiv.style.height = "100%";
+        mdiv.style.zIndex = 9999;
+        let nSpan = document.createElement("span");
+        nSpan.setAttribute("class", "nSpan");
+
+        mdiv.append(nSpan);
+
+        let nSpana = document.createElement("span");
+        nSpana.setAttribute("class", "nSpan");
+
+        nSpana.innerText = ce["desc"];
+        nSpana.style.fontSize = "15px";
+        mdiv.append(nSpana);
+
+        let nSpana2 = document.createElement("span");
+        nSpana2.setAttribute("class", "nSpan");
+
+        nSpana2.innerText =
+          "\nCanı : " + (ce["expiry"] == 0 ? "Sonsuz" : ce["expiry"]);
+        nSpana2.style.fontSize = "15px";
+        mdiv.append(nSpana2);
+        let nBtn = document.createElement("div");
+        nBtn.setAttribute("class", "nBtn");
+        nBtn.innerText = "Satın al (" + ce["price"] + " TL)";
+        nBtn.onclick = function () {
+          BuyItem(ce);
+          notification.remove();
+          notificati2eon.remove();
+        };
+        mdiv.append(nBtn);
+        let nBtn2 = document.createElement("div");
+        nBtn2.setAttribute("class", "nBtn");
+        nBtn2.innerText = "Siktiri çek";
+        nBtn2.onclick = function () {
+          notification.remove();
+          notificati2eon.remove();
+        };
+        mdiv.append(nBtn2);
+        notification.appendChild(mdiv);
+        notification.appendChild(nimage);
+
+        ms.prepend(notification);
+        ms.prepend(notificati2eon);
+      });
+
+      bhdbh.innerText = ce["name"];
+
+      bhd.appendChild(bhdbh);
+
+      sitt.appendChild(bhd);
+
+      if1.appendChild(sitt);
+
+      // }
+
+      sit.appendChild(if1);
+    }
+  }
 }
 
 function closeshop() {
@@ -329,6 +1290,8 @@ let ballTrack = document.getElementsByClassName("ballTrack")[0];
 
 function resetGame() {
   bankValue = 1000;
+  intgameover = false;
+  gameoverd = false;
   currentBet = 0;
   wager = 5;
   bet = [];
@@ -343,31 +1306,58 @@ function startGame() {
   buildWheel();
   buildBettingBoard();
 }
-const yazilar = [
-  "alicengizoyunları",
-  "Nahçivanda doğdum, Ben köylüyüm. - Üstad Alizade",
-  "O Allah The Almighty (yalanbilgi) - Sami Yusuf",
-  "mirsadmuratsarioglu_1453",
-  " Din penis gibidir. Sahip olabilirsin, sahip olmakla gurur duyabilirsin. Ancak! Onu toplumun içinde gösterme, onu çocukların kafasına zorla sokmaya çalışma, onunla kanun yazma ve lütfen onunla düşünme. ",
-  "Çalışan demir ışıldasaydı yarrağım florasan olurdu",
-  " Yarı yâr olanın yar sarar yarasını, yarı yâr olmayanın felek siker anasını. ",
-  " Hayat sik gibidir, bazen aşşağı, bazen yukarı. ama hiç bi zaman sonsuza kadar sert değildir! ",
-  "sevmeyi beceremedim, becerilmeyi sevdim. - alizade",
-  " Aşk dediğin şey sevdiğin birinin sikini senin amına sokmasından ibarettir. ",
-  " İşleyen demir paslanmazmış Ama sikim kurudu - a....",
-  " Laf sokarım derinden sikin oynar yerinden ",
-  "  Ateisti bile cennetime alırım ama animecileri asla (Allah) ) ",
-  " Ateşin odunu yakıp kül ettiği gibi animelerde insanın zekasını yakıp yok eder (Hadis-i Şerif) ",
-  " Seytan diyor ki Namaz kilmayan Babamdir, israf eden Kardesimdir, imam dan once secdeye egilen Oglumdur, Misafir gorunce sinirlenen kadin Annemdir, Acik ve ciplak gezen bayan esimdir, Besmele'siz yemege baslayan Evladimdır, Bu bilgiyi baskasiyla paylasan Düsmanim'dir Bu bilgiyi ogrenip de susan dostumdur RABBIM CUMLEMIZI SEYTAN DAN UZAK KULLARINDAN EYLESIN ",
-  "Dünyanın 🌍💅 Çivisi çıkmış ✈️😢🩻 Çivisi ✨💖 Erkekler erkekliğini 🤨🤑 Kadınlar kadınlığını 🥷🏻🩻 bilecek 🤐🫡😶‍🌫️ Arka kapım ✈️🚪 aralıkğğ 🍆🍆 Nedir bu kalabalık 📕💃🏻",
-  "Bu gerçekten, inanılmaz! - (D)Evrim Ağacı",
-  "Bu başka bir videonun konusu - (D)Evrim Ağacı",
-  "3 kuruşluk hayat bir kere versen nolur yani ? ",
-  "a.... küfür etmicektik",
-  "benimki miraça kadar, mirsadmuratsarioglu_1453'ün götüne kadar.",
-  "Bak GEY900 üm var aramızdaki farka bak a.. p... bak x im var beatsim var elim ayağım nerde vibratör titriyor - Deha Tuzcu",
-];
 function gameOver() {
+  gameoverd = true;
+  if (can > 0) {
+    items.forEach((x) => {
+      useItem(x, 6);
+    });
+    items.forEach((x) => {
+      checkFinish(x, 6);
+    });
+    Speak("Kürtaj olmuş bodrumlu kurpiyer tarafından kuratrıldın!");
+    Speak(
+      "bodrumlu kurpiyer 'Senin kumarın burda bitmez' dedi ve sana göt cebinden 100.000 TL uzattı."
+    );
+    notify(
+      "Kürtaj olmuş bodrumlu kurpiyer tarafından kuratrıldın!",
+      "bodrumlu kurpiyer 'Senin kumarın burda bitmez' dedi ve sana göt cebinden 100.000 TL uzattı.",
+      "sikisekmi",
+      () => {
+        Speak("Öldün");
+        Speak(
+          "Kürtaj olmuş bodrumlu kurpiyer birdaha kürtaj olmak istemediğiden seni öldürdü"
+        );
+        notify(
+          "Öldün",
+          "Kürtaj olmuş bodrumlu kurpiyer birdaha kürtaj olmak istemediğiden seni öldürdü",
+          "ah yalan dünya"
+        );
+        return gameOver();
+      },
+      "eyvallah bacım",
+      () => {
+        bankValue = 100000;
+      }
+    );
+    return;
+  } else {
+    items.forEach((x) => {
+      useItem(x, 6);
+    });
+    items.forEach((x) => {
+      checkFinish(x, 6);
+    });
+  }
+  let nwitms = [];
+  items.forEach((x) => {
+    if (x["type"] == "theme" || x["type"] == "addon") {
+      nwitms.push(x);
+    }
+  });
+  items = nwitms;
+  reloadItems();
+  saveGame();
   let notification = document.createElement("div");
   notification.setAttribute("id", "notification");
   sansdegisikligi = 0;
@@ -391,13 +1381,14 @@ function gameOver() {
   let nSpan = document.createElement("span");
   nSpan.setAttribute("class", "nSpan");
   nSpan.innerText = "Beceriksiz";
-
+  Speak("Beceriksiz");
   mdiv.append(nSpan);
 
   let nSpana = document.createElement("span");
   nSpana.setAttribute("class", "nSpan");
   const ry = yazilar[Math.floor(Math.random() * yazilar.length)];
   nSpana.innerText = ry;
+  Speak(ry);
   nSpana.style.fontSize = "15px";
   mdiv.append(nSpana);
   let nBtn = document.createElement("div");
@@ -405,13 +1396,17 @@ function gameOver() {
   nBtn.innerText = "Benim kumarım burda başlar";
   nBtn.onclick = function () {
     resetGame();
+    gameoverd = false;
   };
   let yBtn = document.createElement("div");
   yBtn.setAttribute("class", "nBtn");
   yBtn.innerText = "Benim kumarım burda biter";
   yBtn.onclick = function () {
-    open("https://www.youtube.com/watch?v=uzOJV0MliAw", "_self");
-    alert(yazilar[Math.floor(Math.random() * yazilar.length)]);
+    Speak("Siktir git.", true);
+    setTimeout(() => {
+      open("https://www.youtube.com/watch?v=uzOJV0MliAw", "_self");
+      alert(yazilar[Math.floor(Math.random() * yazilar.length)]);
+    }, 1500);
   };
   mdiv.append(nBtn);
   mdiv.append(yBtn);
@@ -852,7 +1847,7 @@ function buildBettingBoard() {
 
   let chipDeck = document.createElement("div");
   chipDeck.setAttribute("class", "chipDeck");
-  let chipValues = [1, 5, 10, 100, "clear"];
+  let chipValues = [1, 5, 10, 100, 500, "clear"];
   for (i = 0; i < chipValues.length; i++) {
     let cvi = i;
     let chipColour =
@@ -864,14 +1859,19 @@ function buildBettingBoard() {
         ? "orange"
         : i == 3
         ? "gold"
-        : "clearBet";
+        : i == 4
+        ? "pink"
+        : i == 5
+        ? "clearBet"
+        : "";
+
     let chip = document.createElement("div");
     chip.setAttribute("class", "cdChip " + chipColour);
     chip.onclick = function () {
       if (bhskpl) {
         return;
       }
-      if (cvi !== 4) {
+      if (cvi !== 5) {
         let cdChipActive = document.getElementsByClassName("cdChipActive");
         for (i = 0; i < cdChipActive.length; i++) {
           cdChipActive[i].classList.remove("cdChipActive");
@@ -973,7 +1973,9 @@ function setBet(e, n, t, o) {
             ? "blue"
             : bet[i].amt < 100
             ? "orange"
-            : "gold";
+            : bet[i].amt < 500
+            ? "gold"
+            : "pink";
         e.querySelector(".chip").style.cssText = "";
         e.querySelector(".chip").setAttribute("class", "chip " + chipColour);
         let chipSpan = e.querySelector(".chipSpan");
@@ -1004,7 +2006,9 @@ function setBet(e, n, t, o) {
           ? "blue"
           : wager < 100
           ? "orange"
-          : "gold";
+          : wager < 500
+          ? "gold"
+          : "pink";
       let chip = document.createElement("div");
       chip.setAttribute("class", "chip " + chipColour);
       let chipSpan = document.createElement("span");
@@ -1017,6 +2021,14 @@ function setBet(e, n, t, o) {
 }
 
 function spin() {
+  items.forEach((x) => {
+    useItem(x, 0);
+    useItem(x, 1);
+  });
+  items.forEach((x) => {
+    checkFinish(x, 0);
+    checkFinish(x, 1);
+  });
   var winningSpin = Math.floor(Math.random() * 37);
   if (sansdegisikligi == 0) {
   } else if (Math.floor(Math.random() * 100) + 1 <= sansdegisikligi) {
@@ -1075,129 +2087,20 @@ function spin() {
     removeChips();
     wager = lastWager;
     if (bankValue == 0 && currentBet == 0) {
-      gameOver();
+      if (gameoverd == false) {
+        gameOver();
+      }
     }
   }, 6000);
 }
 
-let revents_1 = [
-  "Karın",
-  "Kocan",
-  "oğlun",
-  "kızın",
-  "Annen",
-  "Deha tuzcu",
-  "Sokaktaki adam",
-  "Eren karayılan",
-  "mirsadmuratsarıoglu_1453",
-  "eskisehir.saygideger.shitpost",
-  "sami yusuf",
-  "Eski karın",
-  "5. karın",
-  "aişe",
-  "muamed",
-  "dinci",
-  "deha tuzcu",
-  "enes baturun çarptığı ağac",
-  "sikilen egzoz borusu",
-  "kemal kılıçdaroglu",
-  "götüne motor takılıp araba yapılan hacı murat efendi",
-  "alizade",
-  "ibn haldun",
-  "yarrak-ül gaffariye",
-  "üstad necip fazıl",
-  "2. elizabeth",
-  "prens salmanın siki",
-  "karısı gözünün önünde sikilirken ezan okuyan imam (öyle bi okur ki ağlatır)",
-  "Ebu cehil",
-  "en çok asılan dekoratif ürün",
-  "93 yaşındaki eşref amca",
-  "tablet reis",
-  "ortadoğunun en iyi pilotu",
-  "bin ladin ailesi",
-  "filistini destekleyen anime kızı (2 dk önce infilak etti)",
-  "israil ajanı güvenlik",
-  "filistin ajanı güvenlik",
-  "Kalın Gelir nickli din kardeşimiz",
-  "doeda admini nickli din kardeşimiz",
-  "bebek görünce nickli din kardeşimiz",
-  "baciyaran4169 nickli din kardeşimiz",
-  "baldızterleten4169 nickli din kardeşimiz",
-  "azginboga5568 nickli din kardeşimiz",
-  "borsa kaplanı",
-  "balici",
-  "juncooka_asigim_sik_beni_🍆❤️‍🔥",
-  "Mihriban 44 İslami evlilik isteyen dul hatun",
-  "evrim ağacı",
-  "sakso5tl",
-];
-let revents_2B = [
-  "Götünü pazarladı ve sana XYZ TL getirdi+",
-  "Anasını pazarladı ve sana XYZ TL getirdi Ama yoldayken soyuldun ve bütün paran gitti0",
-  "Sana bütün parasını verdi ve sana XYZ TL getirdi+",
-  "Sülalenden birini sikti ve hastane masraflarını sana kitledi. XYZ TL paran gitti-",
-  "Sıra bende dedi ve seni sikti XYZ TL paran gitti-",
-  "Sıra bende dedi ve seni sikti bu iş sana XYZ TL getirdi+",
-  "Bir anda XYZ TL paranı diyanet işlerine bağışlamaya karar verdi ve bu parayı senden çaldı-",
-  "Sülalenden birine vibratör soktu ve hastane masraflarını sana kitledi. XYZ TL paran gitti-",
-  "Şarkı çıkartmak için paranı çaldı XYZ TL paran gitti-",
-  "Kendini beykamber efendimiz sandı ve bütün paranı iyilik için istedi sende XYZ TL para verdin-",
-  "Yeni dükkan açmak için senden XYZ TL para aldı-",
-  "Bütün paranla coca colayı boykot etti ve israil ajanları adresi karıştırıp seni öldürdü.0",
-  "Yeni sevgili buldu ve senden XYZ TL para çaldı-",
-  "Arabanı çalıp reisimizin sarayına girdiği için ömür boyu hapise atıldın.0",
-  "Basur olup XYZ TL sakladığın paranla basur ameliyatı oldu-",
-  "Senden apple vision pro aldı ve içinden hıyar çıktı. Bu yüzden evine misafir olarak, bir sümmeye gönderdi. Sümmeye kızımız, infilak etti ve öldün0",
-  "Sokakta giderken aklına bir fikir geldi ve lucifer michaelson (ibne olan) ile sevgili oldu. bu iş sana XYZ TL para getirdi.+",
-  "Adalet bakanı oldu ve ona pandik attığını hatırladı. Hakkında aranma kararı çıkartıldı.1",
-  "Ezan okunurken bir anda senin arabanın önünde namaz kılmaya başladı ve sen onu ezdin.0",
-  "Arabasındaki ilahi ile dans ederken bir anda önüne çıktın ve seni ezdi.0",
-  "Elon musk'a sakso çekti ve sana XYZ TL para getirdi.+",
-  "Kanepenin köşesinde sabahlarken girişimci aklını kullanarak yeni bir iş başlatı ve senden XYZ TL para çaldı.-",
-  "Dans eden kediyi ezdi ve polisler zenci olduğun için senin ezdiğini sandı.1",
-  "Uçağa bomba sokmaya çalıştı, bu yüzden slotların şansı rastgele bir şekilde etkilendi.*",
-  "Togg ile giderken arabasının önüne atladın ve 'yerli otomobilimiz ile beni ez' dedin oda seni ezdi.0",
-  "Azdı ve seni sikti, XYZ TL kazandın.+",
-  "Camide imamın ayaklarına boşaldı ve polise ifade verirken senin ona otuzbir (ayip) çektiğini söyledi bu yüzden polis sana XYZ TL para cezası yazdı.-",
-  "Sokakta LGBT yürüyüşüne katıldığı için slotların şansı rastgele bir şekilde etkilendi.*",
-  "Dağda eşşek sikerken yakalandı ama suçu senin üstüne yıktı Aranma seviyen değişti.1",
-  "X platformunda islama sövdüğü ortaya çıktı ve bunu kuzenim yazdı dedi. kuzeni sen olduğun için aranma seviyen değişti.1",
-  "Yutupta porno izlerken yakalandı ve bilgisayarı sana verdi polisler seni arıyor. Aranma seviyen değişti.1",
-  "İnternette xbox vs playstation kavgası çıkardığı için slotların şansı rastgele bir şekilde etkilendi.*",
-  "Sosyal medyada canlı yayın açmayı bırakıp senden XYZ TL para çaldı.-",
-  "Sosyal medyada canlı yayın açıp hottube yayını yaptı ve sana olan XYZ TL borcunu ödedi.+",
-  "Döndürüp kendine sokma yayını açıp sana XYZ TL para ödedi.+ ",
-  "İlahi dinlerken miraça yükseldiğinden, slotların şansı rastgele bir şekilde etkilendi.*",
-  "Prenses pembesi amı olduğunu idda etti ama bahtından kara çıktı ve sende bu ama bakmak için görevlendirildin ödülün ise XYZ TL.+",
-  "31 çekerken siki kırıldı hastane masraflarını sana kitledi XYZ TL gitti.-",
-  "Uçan dildo yapmak için senden XYZ TL para çaldı.-",
-  "Zeynep bastık fanı olduğu için hapise atılacaktı ama senin spotify hesabından dinlediği ortaya çıktı bu yüzden aranma seviyen değişti.1",
-  "Escorta gitmek için arabanı çaldı buda sana XYZ TL'ye patladı (sümmeyekizimiz).-",
-  "Spotify premium pro max aboneliğini senin kartından yaptı buda sana XYZ TL'ye patladı.-",
-  "Yanlışlıkla evine kargo söyledi sende o kargoyu sattın hesabına XYZ TL para geldi.+",
-  "sülalenden birini öldürdü ve XYZ TL kadar mirası sana kaldı.+",
-  "Ruletin altına XYZ kadar tl düşürdü sende çaldın.+",
-  "Sana büyü yaptı ve yolda giderken cebinden XYZ TL düştü.-",
-  "Padişah oldu ve bir ferman imzaladı, fermanda senin adın geçiyor ve gördüğünüz yerde sikin yazıyor.1",
-];
-let revents_2P = [
-  {
-    Content: "Seni sikmek istiyor",
-    Yes: "İsteğini gerçekleştir",
-    OnYes: [
-      "Senden XYZ TL çaldı.-",
-      "Seni bayılttı ve senin telefonundan ali babacanı aradı.1",
-      "Sana orospu muamelesi yaptı ve sana XYZ TL para ödedi.+",
-    ],
-    No: "Onu döv",
-    OnNo: [
-      "Feminist obezler derneğini çağırdı ve seni öldürdüler.0",
-      "Eline yataktaki dildoyu geçirdin ve kafasına vurdun. XYZ TL kazandın.+",
-      "",
-    ],
-  },
-];
 function revent() {
+  items.forEach((x) => {
+    useItem(x, 4);
+  });
+  items.forEach((x) => {
+    checkFinish(x, 4);
+  });
   var rndmd = Math.floor(Math.random() * 2);
   var evnt = "";
   if (rndmd >= 1) {
@@ -1225,9 +2128,10 @@ function revent() {
   notificati2eon.style.zIndex = 9999;
   notificati2eon.style.position = "absolute";
 
-  let ram = Math.floor(
-    Math.random() * (bankValue / (Math.floor(Math.random() * 4) + 1))
-  );
+  let ram =
+    Math.floor(
+      Math.random() * (bankValue / (Math.floor(Math.random() * 4) + 1))
+    ) + 1;
   let nimage = document.createElement("img");
 
   getrndmcdla().then((x) => {
@@ -1251,16 +2155,23 @@ function revent() {
   nSpan.setAttribute("class", "nSpan");
   let durum = "ERR " + evnt.substring(0, evnt.length - 1);
   if (evnt.substring(evnt.length - 1, evnt.length) == "0") {
-    durum = "Öldün";
-    nbnvl = 0;
+    if (olumsuz) {
+      items.forEach((x) => {
+        checkFinish(x, 11);
+      });
+      durum =
+        "Yakisikliguvenlik5188'in spesyal kelepçesi tarafından kurtarıldın";
+    } else {
+      durum = "Öldün";
+      bankValue = 0;
+      saveGame();
+    }
   } else if (evnt.substring(evnt.length - 1, evnt.length) == "-") {
     durum = "Paran azaldı";
     bankValue = bankValue - ram;
-    nbnvl = bankValue;
   } else if (evnt.substring(evnt.length - 1, evnt.length) == "+") {
     durum = "Paran arttı";
     bankValue = bankValue + ram;
-    nbnvl = bankValue;
   } else if (evnt.substring(evnt.length - 1, evnt.length) == "1") {
     durum =
       "Aranıyorsun (Şans değişkenliğini rastgele bir yönde 1 puan arttırır)";
@@ -1278,6 +2189,16 @@ function revent() {
       sansdegisikligi = (Math.floor(Math.random() * 100) + 1) * -1;
     }
   }
+  if (olumsuz) {
+    if (bankValue <= 0) {
+      bankValue = 1000;
+      durum = "Bodrumlu kurpiyer tarafından kurtarıldın";
+      items.forEach((x) => {
+        checkFinish(x, 11);
+      });
+    }
+  }
+
   nSpan.innerText = durum;
 
   mdiv.append(nSpan);
@@ -1288,6 +2209,13 @@ function revent() {
   evntST =
     evntST.substring(0, 1).toLowerCase() +
     evntST.substring(1, evntST.length).toLowerCase();
+  Speak(durum);
+  Speak(evntST);
+  if (durum == "Öldün" || bankValue + currentBet == 0) {
+    if (gameoverd == false && intgameover == false) {
+      gameOver();
+    }
+  }
   nSpana.innerText = evntST;
   nSpana.style.fontSize = "15px";
   mdiv.append(nSpana);
@@ -1297,9 +2225,9 @@ function revent() {
   nBtn.onclick = function () {
     notification.remove();
     notificati2eon.remove();
-    if (durum == "Öldün") {
+    /*if (durum == "Öldün") {
       gameOver();
-    }
+    }*/
   };
   mdiv.append(nBtn);
   notification.appendChild(mdiv);
@@ -1307,9 +2235,21 @@ function revent() {
 
   container.prepend(notification);
   container.prepend(notificati2eon);
+  items.forEach((x) => {
+    useItem(x, 9);
+  });
+  items.forEach((x) => {
+    checkFinish(x, 9);
+  });
 }
 
 function win(winningSpin, winValue, betTotal) {
+  items.forEach((x) => {
+    useItem(x, 5);
+  });
+  items.forEach((x) => {
+    checkFinish(x, 5);
+  });
   if (winValue > 0) {
     let notification = document.createElement("div");
     notification.setAttribute("id", "notification");
@@ -1398,7 +2338,9 @@ function removeBet(e, n, t, o) {
               ? "blue"
               : bet[i].amt < 100
               ? "orange"
-              : "gold";
+              : bet[i].amt < 500
+              ? "gold"
+              : "pink";
           e.querySelector(".chip").setAttribute("class", "chip " + chipColour);
           let chipSpan = e.querySelector(".chipSpan");
           chipSpan.innerText = bet[i].amt;
@@ -1442,6 +2384,12 @@ function spinWheel(winningSpin) {
     wheel.style.cssText = "";
     style.remove();
     bhskpl = false;
+    items.forEach((x) => {
+      useItem(x, 7);
+    });
+    items.forEach((x) => {
+      checkFinish(x, 7);
+    });
     if (Math.random() <= revs) {
       revent();
     }

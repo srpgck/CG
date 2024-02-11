@@ -1,9 +1,10 @@
 import os as os
-a = os.listdir("./cdla/noti")
+ntd = "themes/kurtbk"
+a = os.listdir("./cdla/"+ntd+"")
 i = 1
 for b in a:
- os.rename("./cdla/noti/"+b,"./cdla/noti/"+b+"I.txt")
-a = os.listdir("./cdla/noti")
+ os.rename("./cdla/"+ntd+"/"+b,"./cdla/"+ntd+"/"+b+"I.txt")
+a = os.listdir("./cdla/"+ntd+"")
 for b in a:
- os.rename("./cdla/noti/"+b,"./cdla/noti/"+str(i)+".txt")
+ os.rename("./cdla/"+ntd+"/"+b,"./cdla/"+ntd+"/"+str(i)+".txt")
  i=i+1
