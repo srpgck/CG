@@ -507,7 +507,8 @@ function playTeyyip(durum){
     let sngs = songs[sel["md"]][sel["sb"]]["_files"]
     let sngsrndm = Math.floor(Math.random()*sngs.length);
     let selsong = sngs[sngsrndm];
-    PlayAudio("./assets/cdla/sfx/"+sel["md"]+"/"+sel["sb"]+"/"+selsong,0)
+    console.log(sel["md"])
+    PlayAudio("https://raw.githubusercontent.com/srpgck/CG/main/CDN/SFX/"+sel["md"]+"/"+sel["sb"]+"/"+selsong,(Math.floor(Math.random()*60)+1))
   }
 }
 function loadSongs() {
@@ -524,6 +525,11 @@ function PlayAudio(konm, dur) {
   audio.src = konm;
   audio.play();
   cp = { konm: konm, dur: dur };
+  setTimeout(()=>{
+    if(cp["konm"] == konm){
+      audio.pause()
+    }
+  },(dur*1000))
 }
 /*setInterval(() => {
   if (audio.duration == cp["dur"]["end"]) {
