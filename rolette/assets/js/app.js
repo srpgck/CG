@@ -194,7 +194,7 @@ const shoplist = [
   {
     id: 0,
     name: "Dildo",
-    price: 15000,
+    price: 1500,
     img: "./rolette/assets/cdla/shop/dildo.txt",
     desc: "Ruleti dildo ile çevirerek, Ekstradan +20 şans puanı elde et!",
     expiry: 1,
@@ -228,7 +228,7 @@ const shoplist = [
   {
     id: 2,
     name: "İtalyanın gemlik şehrinden çıkan yerli ve milli togg Otomobilimiz",
-    price: 20000,
+    price: 200000,
     img: "./rolette/assets/cdla/shop/togg.txt",
     desc: "Rulete togg otomobilin ile giderek, Paranı 2'ye katla!",
     expiry: 1,
@@ -330,7 +330,7 @@ const shoplist = [
   {
     id: 8,
     name: "Kürt başlıklı kız",
-    price: 4999,
+    price: 2300,
     img: "./rolette/assets/cdla/shop/kurtbasliklikiz.txt",
     desc: "Biz o hikayeyi kurttanda dinledik kürt başlıklı kız kaşarlık yapmış diyenlere özel kürt başlıklı kız teması!",
     expiry: 0,

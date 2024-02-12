@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   var openButton = document.getElementById("openButtonH");
   openButton.addEventListener("click", function () {
-    chrome.tabs.create({ url: "./rolette/indexh.html" });
+    chrome.tabs.create({ url: "https://srpgck.github.io/8ballhtml/" });
   });
   var openButton = document.getElementById("openButtonbj");
   openButton.addEventListener("click", function () {
