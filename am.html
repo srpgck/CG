@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tinder-like Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="relative w-[300px] h-[400px] perspective-1000">
+        <div id="cards" class="relative w-full h-full">
+            <!-- Kartlar buraya eklenecek -->
+        </div>
+
+    </div>
+    <div class="absolute bottom-20 left-0 right-0 flex justify-center gap-4">
+        <button id="prevButton" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full">
+            Önceki
+        </button>
+        <button id="nextButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+            Sonraki
+        </button>
+    </div>
+    <script>
+        const cardsContainer = document.getElementById('cards');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+
+        const cardData = [
+            {
+                image: './roul.jpg',
+                title: 'Rulet',
+                buttonLabel: 'Rulet Aç'
+            },
+            {
+                image: './billard.jpg',
+                title: 'Bilardo',
+                buttonLabel: 'Bilardo Aç'
+            },
+            {
+                image: './bj.jpg',
+                title: 'Blackjack',
+                buttonLabel: 'Blackjack Aç'
+            }
+        ];
+
+        let currentCardIndex = 0;
+
+        function createCard(data, index) {
+            const card = document.createElement('div');
+            card.classList.add('absolute', 'w-full', 'h-full', 'rounded-lg', 'shadow-lg', 'overflow-hidden', 'transform', 'transition-transform', 'duration-500', 'ease-in-out');
+
+            // Blur, konumlandırma, boyutlandırma ve z-index
+            let scale = 1;
+            let opacity = 1;
+            let translateX = '0'; 
+            let zIndex = cardData.length - index;
+
+            if (index < currentCardIndex) {
+                translateX = '-150%'; // Soldaki kartlar tamamen dışarıda
+                opacity = 0;
+            } else if (index > currentCardIndex) {
+                translateX = '150%'; // Sağdaki kartlar tamamen dışarıda
+                opacity = 0;
+            } else if (index === currentCardIndex -1) { // Bir önceki kart
+                translateX = '-50%';
+                opacity = 0.5;
+                scale = 0.9;
+            } else if (index === currentCardIndex + 1) { // Bir sonraki kart
+                translateX = '50%';
+                opacity = 0.5;
+                scale = 0.9;
+            }
+
+
+            card.style.transform = `translateX(${translateX}) scale(${scale})`;
+            card.style.opacity = opacity;
+            card.style.zIndex = zIndex;
+
+            card.innerHTML = `
+                <img src="${data.image}" class="object-cover w-full h-3/5">
+                <div class="p-4">
+                    <h2 class="text-xl font-bold mb-2">${data.title}</h2>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        ${data.buttonLabel}
+                    </button>
+                </div>
+            `;
+
+            cardsContainer.appendChild(card);
+        }
+
+        function updateCards() {
+            cardsContainer.innerHTML = ''; // Kartları temizle
+            cardData.forEach((data, index) => createCard(data, index));
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateCards();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentCardIndex < cardData.length - 1) {
+                currentCardIndex++;
+                updateCards();
+            }
+        });
+
+        // Başlangıçta kartları oluştur
+        updateCards();
+    </script>
+
+</body>
+
+</html>
+
+<button class="absolute top-1/2 left-10 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+  <button class="absolute top-1/2 right-10 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>

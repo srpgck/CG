@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Blackjack - Ali cengiz oyunları</title>
+  <link rel='stylesheet'
+    href='./bootstrap-combined.no-icons.min.css'>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./cc.css">
+  <script src="./prefixfree.min.js"></script>
+
+</head>
+
+<body style="background-color: #2e2e2e;">
+  <!-- partial:index.partial.html -->
+  <div id="wrapper">
+    <div id="game">
+      <div id="alert" class="alert alert-error hide"><span></span></div>
+      <div id="dealer">
+        <div id="dhand"></div>
+      </div>
+      <div id="player">
+        <div id="phand"></div>
+      </div>
+      <div id="money">
+        <span id="cash">Cash: $<span></span></span>
+        <div id="bank">Winnings: $<span></span></div>
+      </div>
+    </div>
+    <div id="actions">
+      <button id="deal" class="btn">Deal!</button>
+      <button id="hit" class="btn" disabled>Hit</button>
+      <button id="stand" class="btn" disabled>Stand</button>
+      <button id="double" class="btn" disabled>Double Down</button>
+      <button id="split" class="btn" disabled>Split</button>
+      <button id="insurance" class="btn" disabled>Insurance</button>
+      <strong style="color: white;">Bet $:</strong><input id="wager" class="input-small" type="text" />
+    </div>
+  </div>
+  <div id="myModal" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Fakir alarmı!</h3>
+    </div>
+    <div class="modal-body">
+      <p>Paran bitti fakir. Dilersen çocuklarının rızkı ile, kumar oynamaya devam edebilirsin.</p>
+    </div>
+    <div class="modal-footer">
+      <a id="cancel" class="btn">Benim kumarım burda biter.</a>
+      <a href="#" id="newGame" class="btn btn-primary">Benim kumarım burda başlar.</a>
+    </div>
+  </div>
+  <!-- partial -->
+  <script src="./jquery-3.7.1.min.js"></script>
+  <script src='./bootstrap.min.js'></script>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>

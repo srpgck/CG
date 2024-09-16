@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "CG",
+  "version": "3.0",
+  "description": "Eklenti dizinindeki X.html dosyasını açar.",
+  "permissions": ["tabs", "tts"],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "web_accessible_resources":[
+    "./rolette/assets/cdla/sfx/manifest.json","manifest.json"
+  ],
+  "icons": {
+    "48": "icon.png"
+  }
+}
